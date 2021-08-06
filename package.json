@@ -19,11 +19,13 @@
   },
   "homepage": "https://github.com/smilexx/gitlab-notification-bot#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "log4js": "^6.3.0",
     "node-telegram-bot-api": "^0.54.0",
     "pg": "^8.7.1"
   },
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/node": "^16.4.13",
     "@types/node-telegram-bot-api": "^0.51.4",
     "@types/pg": "^8.6.1",

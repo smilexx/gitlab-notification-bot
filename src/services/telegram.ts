@@ -1,9 +1,9 @@
 import TelegramBot from "node-telegram-bot-api";
 
-import {PORT, BOT_TOKEN, APP_URL} from "../config";
+import {BOT_TOKEN, APP_URL} from "../config";
 import {logger} from "./logger";
 
-const bot = new TelegramBot(BOT_TOKEN, {webHook: {port: Number(PORT)}});
+export const bot = new TelegramBot(BOT_TOKEN);
 
 export const startBot = () => {
     logger.info('bot started');
