@@ -1,8 +1,8 @@
 import log4js from 'log4js';
 
-import {INFO_LEVEL} from '../config'
+import {LOG_LEVEL} from '../config'
 
 const logger = log4js.getLogger();
-logger.level = INFO_LEVEL;
+logger.level = LOG_LEVEL;
 
 export { logger }

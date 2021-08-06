@@ -1,7 +1,7 @@
-import {logger, startBot, startServer} from './services';
+import {connectDatabase, logger, startBot, startServer} from './services';
 
 const main = async () => {
-    // await connectDatabase();
+    await connectDatabase();
     await startBot();
     await startServer();
 }

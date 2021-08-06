@@ -3,18 +3,15 @@ import express from "express";
 import {BOT_TOKEN, PORT} from "../config";
 import {processUpdate, sendMessage} from "./telegram";
 import {getStatus} from "../utils";
-import {intervalToDuration, parseISO} from 'date-fns'
-
-const getDuration = (startDate: string, endDate: string) => intervalToDuration({
-    start: parseISO(startDate), end: parseISO(endDate)
-})
+import {getChatByHash} from "./postgres";
+import {logger} from "./logger";
 
 const getBuild = ({
                       name,
                       status,
                       started_at,
                       finished_at
-                  }) => `${getStatus(status)}: ${name} ${started_at && finished_at ? `(${getDuration(started_at, finished_at)})` : ''}`
+                  }) => `${getStatus(status)}: ${name}`
 
 export const startServer = async () => {
     const app = express();
@@ -26,22 +23,28 @@ export const startServer = async () => {
         res.sendStatus(200);
     });
 
-    app.post(`/notify/:chatId`, async (req, res) => {
+    app.post(`/notify/:hash`, async (req, res) => {
+        logger.debug(req.body);
+
         const {body} = req;
         const {project, user, commit, builds, object_attributes} = body || {};
 
-        if (object_attributes.status !== 'pending') {
+        const {rows: [chat]} = await getChatByHash(req.params.hash);
+
+        logger.debug(chat);
+
+        if (chat && object_attributes.status !== 'pending') {
             const text = [
                 `📽: ${project?.name}`,
                 `👨‍💻: ${user?.name}`,
                 `🎋: ${object_attributes?.ref}`,
                 `💿: ${commit?.message}`,
                 '',
-                `⏲: ${getDuration(object_attributes?.created_at, object_attributes?.finished_at)}`,
+                // `⏲: ${getDuration(object_attributes?.created_at, object_attributes?.finished_at)}`,
                 ...builds.map(getBuild)
             ]
 
-            await sendMessage(req.params.chatId.toString(), text.join('\n'));
+            await sendMessage(chat?.chat_id, text.join('\n'));
         }
 
         res.sendStatus(200);

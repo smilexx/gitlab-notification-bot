@@ -3,7 +3,7 @@ const {
     PORT = 80,
     APP_URL = 'https://<app-name>.herokuapp.com:443',
     DATABASE_URL = '',
-    INFO_LEVEL = 'debug',
+    LOG_LEVEL = 'debug',
 } = process.env;
 
 export {
@@ -11,5 +11,5 @@ export {
     PORT,
     APP_URL,
     DATABASE_URL,
-    INFO_LEVEL
+    LOG_LEVEL
 }
