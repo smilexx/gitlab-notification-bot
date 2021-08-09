@@ -3,7 +3,7 @@ import {v4 as uuidV4} from 'uuid';
 
 import {APP_URL, BOT_TOKEN} from "../config";
 import {logger} from "./logger";
-import {createChat, getChat} from "./postgres";
+import {createBranch, createChat, getBranches, getChat} from "./postgres";
 import {isNil} from "ramda";
 
 export const bot = new TelegramBot(BOT_TOKEN);
@@ -17,14 +17,15 @@ export const startBot = () => {
         logger.error(error);
     });
 
+    const answerCallbacks = {};
+
     bot.onText(/\/start/, async (msg) => {
         logger.debug(msg);
-        let {rows: [chat]} = await getChat(msg.chat.id.toString());
+        let chat = await getChat(msg.chat.id.toString());
 
         logger.debug('chat', chat);
         if (isNil(chat)) {
-            const result = await createChat(msg.chat.id.toString(), uuidV4());
-            [chat] = result.rows;
+            chat = await createChat(msg.chat.id.toString(), uuidV4());
         }
 
         logger.debug(chat);
@@ -35,7 +36,7 @@ export const startBot = () => {
     bot.onText(/\/url/, async (msg) => {
         logger.debug(msg);
 
-        const {rows: [chat]} = await getChat(msg.chat.id.toString());
+        const chat = await getChat(msg.chat.id.toString());
 
         logger.debug(chat);
 
@@ -59,6 +60,51 @@ export const startBot = () => {
                 ]
             }
         })
+    });
+
+    bot.onText(/\/branches/, async (msg) => {
+        const branches = await getBranches(msg.chat.id.toString());
+
+        if (branches.length === 0) {
+            bot.sendMessage(msg.chat.id,'You subscribe to all branches. To add new branch send /addbranch');
+        } else {
+            const text = [
+                'You subscribe to:',
+                `<pre>${branches.map(({ branch }) => `- ${branch}`).join('\n')}</pre>`,
+                '',
+                'to add new branch send /addbranch'
+            ];
+
+            bot.sendMessage(msg.chat.id, text.join('\n'), { parse_mode: "HTML" });
+        }
+    });
+
+    bot.onText(/\/addbranch/, async (msg) => {
+        await bot.sendMessage(msg.chat.id, 'Enter name branch');
+
+        answerCallbacks[msg.chat.id] = async (msg) => {
+            await createBranch(msg.chat.id.toString(), msg.text);
+
+            bot.sendMessage(msg.chat.id, `Success create subscribe to branch ${msg.text}`);
+        }
+    });
+
+    bot.onText(/\/removebranch/, async (msg) => {
+        await bot.sendMessage(msg.chat.id, 'Enter name branch');
+
+        answerCallbacks[msg.chat.id] = async (msg) => {
+            await createBranch(msg.chat.id.toString(), msg.text);
+
+            bot.sendMessage(msg.chat.id, `Success create subscribe to branch ${msg.text}`);
+        }
+    });
+
+    bot.on('message', function (msg) {
+        const callback = answerCallbacks[msg.chat.id];
+        if (callback) {
+            delete answerCallbacks[msg.chat.id];
+            return callback(msg);
+        }
     });
 
     bot.on('callback_query', function (msg) {
