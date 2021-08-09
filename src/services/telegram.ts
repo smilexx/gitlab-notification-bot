@@ -24,12 +24,45 @@ export const startBot = () => {
         logger.debug('chat', chat);
         if (isNil(chat)) {
             const result = await createChat(msg.chat.id.toString(), uuidV4());
-            [chat] = result.rows
+            [chat] = result.rows;
         }
 
         logger.debug(chat);
 
         bot.sendMessage(msg.chat.id, `Hi here! To setup notifications for this chat your GitLab project(repo), open Settings -> Web Hooks and add this URL: ${APP_URL}/notify/${chat?.hash}`);
+    });
+
+    bot.onText(/\/url/, async (msg) => {
+        logger.debug(msg);
+
+        const {rows: [chat]} = await getChat(msg.chat.id.toString());
+
+        logger.debug(chat);
+
+        bot.sendMessage(msg.chat.id, `To setup notifications for this chat your GitLab project(repo), open Settings -> Web Hooks and add this URL: ${APP_URL}/notify/${chat?.hash}`);
+    });
+
+    bot.onText(/\/settings/, async (msg) => {
+        logger.debug(msg);
+
+        bot.sendMessage(msg.chat.id, 'Choose one of the options please:', {
+            "reply_markup": {
+                "inline_keyboard": [
+                    [{
+                        "text": "A1"
+                        , "callback_data": "A1"
+                    },
+                        {
+                            "text": "B1"
+                            , "callback_data": "B1"
+                        }]
+                ]
+            }
+        })
+    });
+
+    bot.on('callback_query', function (msg) {
+        logger.info(msg);
     });
 }
 
