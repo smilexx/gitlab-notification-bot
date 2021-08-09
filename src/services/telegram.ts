@@ -19,7 +19,7 @@ export const startBot = () => {
 
     bot.onText(/\/start/, async (msg) => {
         logger.debug(msg);
-        let {rows: [ chat ]} = await getChat(msg.chat.id.toString());
+        let {rows: [chat]} = await getChat(msg.chat.id.toString());
 
         logger.debug('chat', chat);
         if (isNil(chat)) {
@@ -34,4 +34,4 @@ export const startBot = () => {
 
 export const processUpdate = async (data: any) => bot.processUpdate(data);
 
-export const sendMessage = async (chatId: string | number, text: string) => bot.sendMessage(chatId, text);
+export const sendMessage = async (chatId: string | number, text: string) => bot.sendMessage(chatId, text, {parse_mode: "HTML"});

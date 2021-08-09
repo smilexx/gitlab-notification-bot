@@ -7,11 +7,12 @@ import {getChatByHash} from "./postgres";
 import {logger} from "./logger";
 
 const getBuild = ({
+                      id,
                       name,
                       status,
                       started_at,
                       finished_at
-                  }) => `${getStatus(status)}: ${name}`
+                  }, {web_url}) => `${getStatus(status)}: <a href="${web_url}/-/jobs/${id}">${name}</a>`
 
 export const startServer = async () => {
     const app = express();
@@ -35,13 +36,16 @@ export const startServer = async () => {
 
         if (chat && object_attributes.status !== 'pending') {
             const text = [
+                getStatus(object_attributes.status),
                 `📽: ${project?.name}`,
                 `👨‍💻: ${user?.name}`,
                 `🎋: ${object_attributes?.ref}`,
                 `💿: ${commit?.message}`,
                 '',
                 // `⏲: ${getDuration(object_attributes?.created_at, object_attributes?.finished_at)}`,
-                ...builds.map(getBuild)
+                ...builds.map((build) => getBuild(build, project)),
+                '',
+                `${project?.web_url}/pipelines/${object_attributes?.id}`
             ]
 
             await sendMessage(chat?.chat_id, text.join('\n'));
