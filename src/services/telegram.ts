@@ -50,7 +50,7 @@ export const startBot = () => {
                 "inline_keyboard": [
                     [{
                         "text": "A1"
-                        , "callback_data": "A1"
+                        , "callback_data": "/branches"
                     },
                         {
                             "text": "B1"
