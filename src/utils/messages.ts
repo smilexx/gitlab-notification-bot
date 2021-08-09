@@ -12,6 +12,8 @@ export const getStatus = (status: string) => {
             return '✅'
         case 'failed':
             return '🛑'
+        case 'manual':
+            return '⏯'
         default:
             return status;
     }

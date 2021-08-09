@@ -23,7 +23,8 @@ export const startBot = () => {
 
         logger.debug('chat', chat);
         if (isNil(chat)) {
-            chat = await createChat(msg.chat.id.toString(), uuidV4())
+            const result = await createChat(msg.chat.id.toString(), uuidV4());
+            [chat] = result.rows
         }
 
         logger.debug(chat);
