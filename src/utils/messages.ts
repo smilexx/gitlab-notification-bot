@@ -10,7 +10,7 @@ export const getStatus = (status: string) => {
             return '▶️'
         case 'success':
             return '✅'
-        case 'error':
+        case 'failed':
             return '🛑'
         default:
             return status;
