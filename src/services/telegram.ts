@@ -100,6 +100,8 @@ export const startBot = () => {
     });
 
     bot.on('message', function (msg) {
+        logger.debug('get message', msg);
+
         const callback = answerCallbacks[msg.chat.id];
         if (callback) {
             delete answerCallbacks[msg.chat.id];

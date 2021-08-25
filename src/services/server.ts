@@ -62,6 +62,8 @@ export const startServer = async () => {
     app.use(express.json());
 
     app.post(`/bot${BOT_TOKEN}`, (req, res) => {
+        logger.debug(req.body);
+
         processUpdate(req.body);
         res.sendStatus(200);
     });
