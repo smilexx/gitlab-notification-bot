@@ -4,40 +4,33 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { pipe, includes, prop, __ } from 'ramda';
+import { Build, PipelineEvent, TagPushEvent } from 'gitlab-event-types';
+import { includes, pipe, prop, __ } from 'ramda';
 import { TelegramService } from '../telegram/telegram.service';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Branch } from '../../entities/branch.entity';
-import { Repository } from 'typeorm';
-import { Chat } from '../../entities/chat.entity';
 
 @Injectable()
 export class NotifyService {
   private readonly logger = new Logger(NotifyService.name);
 
-  constructor(
-    private readonly telegramService: TelegramService,
-    @InjectRepository(Chat)
-    private chatsRepository: Repository<Chat>,
-    @InjectRepository(Branch)
-    private branchesRepository: Repository<Branch>,
-  ) {}
+  constructor(private readonly telegramService: TelegramService) {}
 
-  public notify = async (hash: string, data: any) => {
-    const chat = await this.chatsRepository.findOne({ where: { hash } });
-
-    if (!chat) {
+  public notify = async (
+    chatId: string,
+    branches: string[],
+    data: PipelineEvent | TagPushEvent,
+  ) => {
+    if (!chatId) {
       throw new NotFoundException('not found chat');
     }
 
     switch (data?.object_kind) {
       case 'pipeline': {
-        await this.notifyPipeline(chat, data);
+        await this.notifyPipeline(chatId, branches, data);
         break;
       }
 
       case 'tag_push': {
-        await this.notifyTag(chat, data);
+        await this.notifyTag(chatId, data);
         break;
       }
 
@@ -46,23 +39,25 @@ export class NotifyService {
     }
   };
 
-  private notifyPipeline = async (chat: Chat, body: Record<string, any>) => {
+  private notifyPipeline = async (
+    chatId: string,
+    branches: string[],
+    body: PipelineEvent,
+  ) => {
     const { project, user, commit, builds, object_attributes } = body || {};
-
-    const branches = await this.branchesRepository.find({
-      where: { chatId: chat?.chatId },
-    });
 
     if (
       branches.length > 0 &&
-      !branches.find(({ branch }) => object_attributes?.ref.search(branch) > -1)
+      !branches.find(
+        (branch) => object_attributes?.ref.search(new RegExp(branch)) > -1,
+      )
     ) {
       return null;
     }
 
-    this.logger.debug(chat);
+    this.logger.debug(chatId);
 
-    if (chat && this.isNotifyStatus(object_attributes)) {
+    if (chatId && this.isNotifyStatus(object_attributes)) {
       const text = [
         this.getStatus(object_attributes.status),
         `📽: ${project?.name}`,
@@ -76,18 +71,18 @@ export class NotifyService {
         `${project?.web_url}/pipelines/${object_attributes?.id}`,
       ];
 
-      await this.telegramService.sendMessage(chat?.chatId, text.join('\n'));
+      await this.telegramService.sendMessage(chatId, text.join('\n'));
     }
   };
 
-  private notifyTag = async (chat: Chat, body) => {
+  private notifyTag = async (chatId: string, body: TagPushEvent) => {
     const { ref, project, total_commits_count } = body || {};
 
     const tag = ref.split('/').pop();
 
-    if (chat && total_commits_count > 0) {
+    if (chatId && total_commits_count > 0) {
       await this.telegramService.sendMessage(
-        chat?.chatId,
+        chatId,
         `${project?.name}: <a href="${project?.web_url}/-/tags/${tag}">${tag}</a>`,
       );
     }
@@ -99,7 +94,7 @@ export class NotifyService {
   );
 
   private getBuild = (
-    { id, name, status, started_at, finished_at },
+    { id, name, status, started_at, finished_at }: Build,
     { web_url },
   ) =>
     `${this.getStatus(status)}: <a href="${web_url}/-/jobs/${id}">${name}</a>`;

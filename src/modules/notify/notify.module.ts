@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { NotifyService } from './notify.service';
 import { TelegramModule } from '../telegram/telegram.module';
-import { Chat } from '../../entities/chat.entity';
-import { Branch } from '../../entities/branch.entity';
+import { NotifyService } from './notify.service';
 
 @Module({
-  imports: [TelegramModule, TypeOrmModule.forFeature([Chat, Branch])],
+  imports: [TelegramModule],
   providers: [NotifyService],
-  exports: [NotifyService]
+  exports: [NotifyService],
 })
 export class NotifyModule {}
