@@ -26,11 +26,17 @@ export class AppController {
 
   @Post(`bot${BOT_TOKEN}`)
   async processUpdate(@Body() data: any, @Res() res: Response): Promise<void> {
-    this.logger.debug(data);
+    try {
+      this.logger.debug(data);
 
-    await this.telegramService.processUpdate(data);
+      await this.telegramService.processUpdate(data);
 
-    res.status(200).send();
+      res.status(200).send();
+    } catch (e) {
+      this.logger.error(e.message);
+
+      throw e;
+    }
   }
 
   @Post(`notify/:hash`)
