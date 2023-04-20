@@ -7,6 +7,6 @@ import { Chat } from '../../entities/chat.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Chat, Branch])],
   providers: [TelegramService],
-  exports: [TelegramService]
+  exports: [TelegramService],
 })
 export class TelegramModule {}

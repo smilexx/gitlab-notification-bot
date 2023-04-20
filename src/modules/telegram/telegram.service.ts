@@ -13,7 +13,7 @@ import { Branch } from 'src/entities/branch.entity';
 export class TelegramService {
   private readonly logger = new Logger(TelegramService.name);
 
-  private bot = null;
+  private bot: TelegramBot = null;
 
   private answerCallbacks = {};
 
@@ -103,7 +103,7 @@ export class TelegramService {
           [
             {
               text: 'A1',
-              callback_data: '/branches',
+              callback_data: 'A1',
             },
             {
               text: 'B1',

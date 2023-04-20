@@ -10,4 +10,7 @@ export class Chat {
 
   @Column()
   hash: string;
+
+  @Column()
+  name: string;
 }

@@ -76,7 +76,12 @@ export class NotifyService {
         `${project?.web_url}/pipelines/${object_attributes?.id}`,
       ];
 
-      await this.telegramService.sendMessage(chat?.chatId, text.join('\n'));
+      const message = await this.telegramService.sendMessage(
+        chat?.chatId,
+        text.join('\n'),
+      );
+
+      this.logger.debug('send message', message);
     }
   };
 
