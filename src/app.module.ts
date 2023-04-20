@@ -14,9 +14,7 @@ import { TelegramService } from './modules/telegram/telegram.service';
       type: 'postgres',
       url: DATABASE_URL,
       entities: [Chat, Branch],
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      ssl: false,
     }),
     TelegramModule,
     NotifyModule,

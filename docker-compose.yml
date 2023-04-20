@@ -28,6 +28,7 @@ services:
   db:
     image: postgres:14
     restart: always
+    container_name: postgres
     environment:
       - POSTGRES_USER=bot
       - POSTGRES_PASSWORD=bot
