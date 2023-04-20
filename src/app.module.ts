@@ -2,7 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { TelegramModule } from './modules/telegram/telegram.module';
-import { DATABASE_URL } from './config';
+import {
+  DATABASE_HOST,
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  DATABASE_NAME,
+} from './config';
 import { Branch } from './entities/branch.entity';
 import { Chat } from './entities/chat.entity';
 import { NotifyModule } from './modules/notify/notify.module';
@@ -12,7 +17,10 @@ import { TelegramService } from './modules/telegram/telegram.service';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: DATABASE_URL,
+      host: DATABASE_HOST,
+      username: DATABASE_USER,
+      password: DATABASE_PASSWORD,
+      database: DATABASE_NAME,
       entities: [Chat, Branch],
       ssl: false,
     }),

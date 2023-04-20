@@ -5,9 +5,21 @@ dotenv.config();
 const {
   BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN',
   PORT = 80,
-  APP_URL = 'https://<app-name>.herokuapp.com:443',
-  DATABASE_URL = '',
+  APP_URL = '',
   LOG_LEVEL = 'debug',
+  DATABASE_HOST = '',
+  DATABASE_USER = '',
+  DATABASE_PASSWORD = '',
+  DATABASE_NAME = 'bot',
 } = process.env;
 
-export { BOT_TOKEN, PORT, APP_URL, DATABASE_URL, LOG_LEVEL };
+export {
+  BOT_TOKEN,
+  PORT,
+  APP_URL,
+  DATABASE_HOST,
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  DATABASE_NAME,
+  LOG_LEVEL,
+};

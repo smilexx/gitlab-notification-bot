@@ -3,32 +3,36 @@ version: "3"
 services:
   app:
     build: .
-    container_name: app
+    container_name: gitlab-notify-bot-app
     environment:
-      - APP_URL=https://${DNS_DOMAIN}
+      - APP_URL=https://${DNS_DOMAIN}/bot
       - BOT_TOKEN=${BOT_TOKEN}
-      - DATABASE_URL=postgres://bot:bot@postgres:5432/bot
+      - DATABASE_HOST=db
+      - DATABASE_USER=bot
+      - DATABASE_PASSWORD=bot
+      - DATABASE_NAME=bot
       - LOG_LEVEL=${LOG_LEVEL}
       - PORT=${PORT}
     networks:
       - proxy
       - bot
+    depends_on:
+      - db
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.notify-bot.tls.certresolver=lets-encrypt'
-      - 'traefik.http.routers.notify-bot.rule=Host(`${DNS_DOMAIN}`) && PathPrefix(`/bot${BOT_TOKEN}`)'
+      - 'traefik.http.routers.notify-bot.rule=Host(`${DNS_DOMAIN}`) && PathPrefix(`/bot`)'
       - 'traefik.http.routers.notify-bot.entrypoints=websecure'
       - 'traefik.http.routers.notify-bot.service=notify-bot'
       - 'traefik.http.services.notify-bot.loadbalancer.server.port=${PORT}'
-      - 'traefik.http.services.notify-bot.loadbalancer.server.url=http://app:${PORT}/'
+      - 'traefik.http.services.notify-bot.loadbalancer.server.url=http://gitlab-notify-bot-app:${PORT}'
 
   db:
     image: postgres:14
     restart: always
-    container_name: postgres
     environment:
       - POSTGRES_USER=bot
       - POSTGRES_PASSWORD=bot
@@ -43,5 +47,6 @@ volumes:
   
 networks:
   bot:
+    external: false
   proxy:
     external: true
