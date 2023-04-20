@@ -3,9 +3,8 @@ version: "3"
 services:
   app:
     build: .
-    container_name: gitlab-notify-bot-app
     environment:
-      - APP_URL=https://${DNS_DOMAIN}/bot
+      - APP_URL=https://${DNS_DOMAIN}/bot-notify
       - BOT_TOKEN=${BOT_TOKEN}
       - DATABASE_HOST=db
       - DATABASE_USER=bot
@@ -24,11 +23,10 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.notify-bot.tls.certresolver=lets-encrypt'
-      - 'traefik.http.routers.notify-bot.rule=Host(`${DNS_DOMAIN}`) && PathPrefix(`/bot`)'
+      - 'traefik.http.routers.notify-bot.rule=Host(`${DNS_DOMAIN}`) && PathPrefix(`/bot-notify`)'
       - 'traefik.http.routers.notify-bot.entrypoints=websecure'
       - 'traefik.http.routers.notify-bot.service=notify-bot'
       - 'traefik.http.services.notify-bot.loadbalancer.server.port=${PORT}'
-      - 'traefik.http.services.notify-bot.loadbalancer.server.url=http://gitlab-notify-bot-app:${PORT}'
 
   db:
     image: postgres:14
@@ -39,8 +37,15 @@ services:
       - POSTGRES_DB=bot
     networks:
       - bot
+      - proxy
     volumes:
       - postgres:/var/lib/postgresql/data
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.tcp.routers.bot-postgres.rule=HostSNI(`*`)'
+      - 'traefik.tcp.routers.bot-postgres.entrypoints=postgres'
+      - 'traefik.tcp.routers.bot-postgres.service=bot-postgres'
+      - 'traefik.tcp.services.bot-postgres.loadbalancer.server.port=5432'
 
 volumes:
   postgres:

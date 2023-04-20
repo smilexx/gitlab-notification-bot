@@ -23,6 +23,7 @@ import { TelegramService } from './modules/telegram/telegram.service';
       database: DATABASE_NAME,
       entities: [Chat, Branch],
       ssl: false,
+      synchronize: true,
     }),
     TelegramModule,
     NotifyModule,

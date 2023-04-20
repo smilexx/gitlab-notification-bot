@@ -4,7 +4,7 @@ import { BOT_TOKEN } from './config';
 import { TelegramService } from './modules/telegram/telegram.service';
 import { NotifyService } from './modules/notify/notify.service';
 
-@Controller()
+@Controller('/bot-notify')
 export class AppController {
   private readonly logger = new Logger(AppController.name);
 
