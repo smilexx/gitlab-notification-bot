@@ -121,7 +121,7 @@ export class NotifyService {
         `👨‍💻: ${user?.name}`,
         `${object_attributes?.title}`,
         '',
-        `${project?.web_url}/merge_requests/${object_attributes?.id}`,
+        `${project?.web_url}/merge_requests/${object_attributes?.iid}`,
       ];
 
       const message = await this.telegramService.sendMessage(
