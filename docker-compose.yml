@@ -35,6 +35,11 @@ services:
       - POSTGRES_USER=bot
       - POSTGRES_PASSWORD=bot
       - POSTGRES_DB=bot
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U bot -d bot'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     networks:
       - bot
       - proxy
