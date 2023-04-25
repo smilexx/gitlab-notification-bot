@@ -6,7 +6,7 @@ const {
   BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN',
   PORT = 80,
   APP_URL = '',
-  LOG_LEVEL = 'debug',
+  LOG_LEVEL = 'info',
   DATABASE_HOST = '',
   DATABASE_USER = '',
   DATABASE_PASSWORD = '',

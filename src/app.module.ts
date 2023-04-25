@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { TelegramModule } from './modules/telegram/telegram.module';
 import {
@@ -7,6 +8,7 @@ import {
   DATABASE_USER,
   DATABASE_PASSWORD,
   DATABASE_NAME,
+  LOG_LEVEL,
 } from './config';
 import { Branch } from './entities/branch.entity';
 import { Chat } from './entities/chat.entity';
@@ -15,6 +17,11 @@ import { TelegramService } from './modules/telegram/telegram.service';
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: LOG_LEVEL,
+      },
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: DATABASE_HOST,
