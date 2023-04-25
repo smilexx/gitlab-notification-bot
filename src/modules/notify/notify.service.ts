@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import type {
+  Build,
   MergeRequestEvent,
   PipelineEvent,
   TagPushEvent,
@@ -137,10 +138,7 @@ export class NotifyService {
     includes(__, ['success', 'failed']),
   );
 
-  private getBuild = (
-    { id, name, status, started_at, finished_at },
-    { web_url },
-  ) =>
+  private getBuild = ({ id, name, status }: Build, { web_url }) =>
     `${this.getStatus(status)}: <a href="${web_url}/-/jobs/${id}">${name}</a>`;
 
   private getStatus = (status: string) => {
