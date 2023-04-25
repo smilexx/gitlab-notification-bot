@@ -78,7 +78,7 @@ export class NotifyService {
 
     if (chat && this.isNotifyStatus(object_attributes)) {
       const text = [
-        `[PIPLINE] ${this.getStatus(object_attributes.status)}`,
+        `[PIPELINE] ${this.getStatus(object_attributes.status)}`,
         `📽: ${project?.name}`,
         `👨‍💻: ${user?.name}`,
         `🎋: ${object_attributes?.ref}`,
