@@ -115,7 +115,7 @@ export class NotifyService {
   private notifyMerge = async (chat: Chat, body: MergeRequestEvent) => {
     const { project, object_attributes, user } = body || {};
 
-    if (chat) {
+    if (chat && object_attributes.action === 'open') {
       const text = [
         `[MR]📽: ${project?.name}`,
         `👨‍💻: ${user?.name}`,
