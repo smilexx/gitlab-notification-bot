@@ -4,12 +4,17 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { pipe, includes, prop, __ } from 'ramda';
-import { TelegramService } from '../telegram/telegram.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Branch } from '../../entities/branch.entity';
+import type {
+  MergeRequestEvent,
+  PipelineEvent,
+  TagPushEvent,
+} from 'gitlab-event-types';
+import { __, includes, pipe, prop } from 'ramda';
 import { Repository } from 'typeorm';
+import { Branch } from '../../entities/branch.entity';
 import { Chat } from '../../entities/chat.entity';
+import { TelegramService } from '../telegram/telegram.service';
 
 @Injectable()
 export class NotifyService {
@@ -23,7 +28,10 @@ export class NotifyService {
     private branchesRepository: Repository<Branch>,
   ) {}
 
-  public notify = async (hash: string, data: any) => {
+  public notify = async (
+    hash: string,
+    data: PipelineEvent | TagPushEvent | MergeRequestEvent,
+  ) => {
     const chat = await this.chatsRepository.findOne({ where: { hash } });
 
     if (!chat) {
@@ -41,12 +49,17 @@ export class NotifyService {
         break;
       }
 
+      case 'merge_request': {
+        await this.notifyMerge(chat, data);
+        break;
+      }
+
       default:
         throw new BadRequestException('unknown type');
     }
   };
 
-  private notifyPipeline = async (chat: Chat, body: Record<string, any>) => {
+  private notifyPipeline = async (chat: Chat, body: PipelineEvent) => {
     const { project, user, commit, builds, object_attributes } = body || {};
 
     const branches = await this.branchesRepository.find({
@@ -64,7 +77,7 @@ export class NotifyService {
 
     if (chat && this.isNotifyStatus(object_attributes)) {
       const text = [
-        this.getStatus(object_attributes.status),
+        `[PIPLINE] ${this.getStatus(object_attributes.status)}`,
         `📽: ${project?.name}`,
         `👨‍💻: ${user?.name}`,
         `🎋: ${object_attributes?.ref}`,
@@ -85,7 +98,7 @@ export class NotifyService {
     }
   };
 
-  private notifyTag = async (chat: Chat, body) => {
+  private notifyTag = async (chat: Chat, body: TagPushEvent) => {
     const { ref, project, total_commits_count } = body || {};
 
     const tag = ref.split('/').pop();
@@ -93,8 +106,29 @@ export class NotifyService {
     if (chat && total_commits_count > 0) {
       await this.telegramService.sendMessage(
         chat?.chatId,
-        `${project?.name}: <a href="${project?.web_url}/-/tags/${tag}">${tag}</a>`,
+        `[TAG] ${project?.name}: <a href="${project?.web_url}/-/tags/${tag}">${tag}</a>`,
       );
+    }
+  };
+
+  private notifyMerge = async (chat: Chat, body: MergeRequestEvent) => {
+    const { project, object_attributes, user } = body || {};
+
+    if (chat) {
+      const text = [
+        `[MR]📽: ${project?.name}`,
+        `👨‍💻: ${user?.name}`,
+        `${object_attributes?.title}`,
+        '',
+        `${project?.web_url}/merge_requests/${object_attributes?.id}`,
+      ];
+
+      const message = await this.telegramService.sendMessage(
+        chat?.chatId,
+        text.join('\n'),
+      );
+
+      this.logger.debug('send message', message);
     }
   };
 
