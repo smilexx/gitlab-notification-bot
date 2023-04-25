@@ -11,6 +11,6 @@ export class Chat {
   @Column()
   hash: string;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 }
