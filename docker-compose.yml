@@ -12,6 +12,7 @@ services:
       - DATABASE_NAME=bot
       - LOG_LEVEL=${LOG_LEVEL}
       - PORT=${PORT}
+    restart: always
     networks:
       - proxy
       - bot
