@@ -1,0 +1,17 @@
+include includes/status.pug
+
+| [PIPELINE]
++getStatus(status)
+| 
+| 📽: #{project}
+| 👨‍💻: #{user}
+| 🎋: #{branch}
+| 💿: #{message}
+| 
+each build in builds
+  +getStatus(status) 
+  a(href=webUrl + '/-/jobs/' + build.id) #{build.name}
+  | 
+  | 
+| 
+| #{webUrl}/pipelines/#{id}

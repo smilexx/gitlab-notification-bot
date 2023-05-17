@@ -1,0 +1,16 @@
+mixin getStatus(status)
+  case status 
+    when 'created'
+      | ⏸
+    when 'canceled'
+      | ⏹
+    when 'pending'
+      | 🕙
+    when 'running'
+      | ▶️
+    when 'success'
+      | ✅
+    when 'failed'
+      | 🛑
+    when 'manual'
+      | ⏯

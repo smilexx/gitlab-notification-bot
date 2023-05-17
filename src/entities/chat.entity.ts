@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { MergeRequest } from './merge-request.entity';
 
 @Entity({ name: 'chats' })
 export class Chat {
@@ -13,4 +14,7 @@ export class Chat {
 
   @Column({ nullable: true })
   name: string;
+
+  @OneToMany(() => MergeRequest, (mergeRequest) => mergeRequest.chat)
+  mergeRequests: MergeRequest[];
 }

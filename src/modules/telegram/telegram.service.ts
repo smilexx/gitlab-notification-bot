@@ -4,10 +4,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as TelegramBot from 'node-telegram-bot-api';
 import { v4 as uuidV4 } from 'uuid';
+import * as pug from 'pug';
 
 import { APP_URL, BOT_TOKEN } from '../../config';
 import { Chat } from '../../entities/chat.entity';
 import { Branch } from 'src/entities/branch.entity';
+
+const templateMap = {
+  start: pug.compileFile('views/messages/start.pug'),
+  url: pug.compileFile('views/messages/url.pug'),
+  branches: pug.compileFile('views/messages/branches.pug'),
+};
 
 @Injectable()
 export class TelegramService {
@@ -40,12 +47,16 @@ export class TelegramService {
     this.bot.onText(/\/addbranch/, this.onAddBranch);
     this.bot.onText(/\/removebranch/, this.onRemoveBranch);
     this.bot.on('message', this.onMessage);
+    this.bot.on('channel_post', this.onChannelPost);
   }
 
   public processUpdate = async (data: any) => this.bot.processUpdate(data);
 
   public sendMessage = async (chatId: string | number, text: string) =>
-    this.bot.sendMessage(chatId, text, { parse_mode: 'HTML' });
+    this.bot.sendMessage(chatId, text, {
+      parse_mode: 'HTML',
+      disable_web_page_preview: true,
+    });
 
   private webhookError = (error) => {
     this.logger.error(error);
@@ -57,7 +68,7 @@ export class TelegramService {
     });
   };
 
-  private onStart = async (msg) => {
+  private onStart = async (msg: TelegramBot.Message) => {
     this.logger.debug(msg);
 
     const chatId = msg.chat.id;
@@ -67,7 +78,7 @@ export class TelegramService {
     this.logger.debug('chat', chat);
 
     if (isNil(chat)) {
-      chat = await this.chatsRepository.create({
+      chat = await this.chatsRepository.save({
         chatId: chatId.toString(),
         hash: uuidV4(),
       });
@@ -77,7 +88,8 @@ export class TelegramService {
 
     this.bot.sendMessage(
       chatId,
-      `Hi here! To setup notifications for this chat your GitLab project(repo), open Settings -> Web Hooks and add this URL: ${APP_URL}/notify/${chat?.hash}`,
+      templateMap.start({ appUrl: APP_URL, hash: chat.hash }),
+      { parse_mode: 'HTML' },
     );
   };
 
@@ -90,7 +102,8 @@ export class TelegramService {
 
     this.bot.sendMessage(
       msg.chat.id,
-      `To setup notifications for this chat your GitLab project(repo), open Settings -> Web Hooks and add this URL: ${APP_URL}/notify/${chat?.hash}`,
+      templateMap.url({ appUrl: APP_URL, hash: chat.hash }),
+      { parse_mode: 'HTML' },
     );
   };
 
@@ -126,14 +139,7 @@ export class TelegramService {
         'You subscribe to all branches. To add new branch send /addbranch',
       );
     } else {
-      const text = [
-        'You subscribe to:',
-        `<pre>${branches.map(({ branch }) => `- ${branch}`).join('\n')}</pre>`,
-        '',
-        'to add new branch send /addbranch',
-      ];
-
-      this.bot.sendMessage(msg.chat.id, text.join('\n'), {
+      this.bot.sendMessage(msg.chat.id, templateMap.branches({ branches }), {
         parse_mode: 'HTML',
       });
     }
@@ -171,13 +177,21 @@ export class TelegramService {
     };
   };
 
-  private onMessage = (msg) => {
+  private onMessage = (msg: TelegramBot.Message) => {
     this.logger.debug('get message', msg);
 
     const callback = this.answerCallbacks[msg.chat.id];
     if (callback) {
       delete this.answerCallbacks[msg.chat.id];
       return callback(msg);
+    }
+  };
+
+  private onChannelPost = (msg: TelegramBot.Message) => {
+    this.logger.debug('get message', msg);
+
+    if (msg.text === '/start') {
+      this.onStart(msg);
     }
   };
 }

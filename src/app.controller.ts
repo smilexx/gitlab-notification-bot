@@ -2,7 +2,7 @@ import { Body, Controller, Logger, Param, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { BOT_TOKEN } from './config';
 import { TelegramService } from './modules/telegram/telegram.service';
-import { NotifyService } from './modules/notify/notify.service';
+import { WebHookService } from './modules/webhook/webhook.service';
 
 @Controller('/bot-notify')
 export class AppController {
@@ -10,7 +10,7 @@ export class AppController {
 
   constructor(
     private readonly telegramService: TelegramService,
-    private readonly notifyService: NotifyService,
+    private readonly notifyService: WebHookService,
   ) {}
 
   @Post(`bot${BOT_TOKEN}`)

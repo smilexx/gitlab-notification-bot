@@ -2,18 +2,22 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
-import { TelegramModule } from './modules/telegram/telegram.module';
 import {
   DATABASE_HOST,
-  DATABASE_USER,
-  DATABASE_PASSWORD,
   DATABASE_NAME,
+  DATABASE_PASSWORD,
+  DATABASE_USER,
   LOG_LEVEL,
 } from './config';
+import { Approve } from './entities/approve.entity';
 import { Branch } from './entities/branch.entity';
 import { Chat } from './entities/chat.entity';
-import { NotifyModule } from './modules/notify/notify.module';
+import { MergeRequest } from './entities/merge-request.entity';
+import { User } from './entities/user.entity';
+import { MergeModule } from './modules/merge/merge.module';
+import { TelegramModule } from './modules/telegram/telegram.module';
 import { TelegramService } from './modules/telegram/telegram.service';
+import { WebHookModule } from './modules/webhook/webhook.module';
 
 @Module({
   imports: [
@@ -28,12 +32,13 @@ import { TelegramService } from './modules/telegram/telegram.service';
       username: DATABASE_USER,
       password: DATABASE_PASSWORD,
       database: DATABASE_NAME,
-      entities: [Chat, Branch],
+      entities: [Chat, Branch, MergeRequest, Approve, User],
       ssl: false,
       synchronize: true,
     }),
     TelegramModule,
-    NotifyModule,
+    WebHookModule,
+    MergeModule,
   ],
   controllers: [AppController],
 })
