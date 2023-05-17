@@ -10,6 +10,9 @@ services:
       - DATABASE_USER=bot
       - DATABASE_PASSWORD=bot
       - DATABASE_NAME=bot
+      - GITLAB_TOKEN=${GITLAB_TOKEN}
+      - GITLAB_HOST=${GITLAB_HOST}
+      - MINIMAL_APPROVES=${MINIMAL_APPROVES}
       - LOG_LEVEL=${LOG_LEVEL}
       - PORT=${PORT}
     restart: always
