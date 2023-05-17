@@ -165,7 +165,10 @@ export class WebHookService {
       mergeRequest.messageId = message.message_id;
 
       await this.mergeService.updateOne(mergeRequest);
-      await this.mergeService.createDiscussion(mergeRequest);
+
+      if (mergeRequest.status === 'opened') {
+        await this.mergeService.createDiscussion(mergeRequest);
+      }
     }
 
     if (data.action === 'approved') {
