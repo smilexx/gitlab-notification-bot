@@ -173,5 +173,9 @@ export class WebHookService {
     } else if (data.action === 'unapproved') {
       await this.mergeService.unapprove(mergeRequest, user);
     }
+
+    mergeRequest.status = data.state;
+
+    await this.mergeService.updateOne(mergeRequest);
   };
 }
