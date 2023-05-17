@@ -49,7 +49,7 @@ export class MergeService {
   public async createDiscussion(
     mergeRequest: MergeRequest,
   ): Promise<MergeRequest> {
-    const count = await this.approvesRepository.countBy({ mergeRequest });
+    const count = await this.getCountApproves(mergeRequest);
 
     const result = await this.api.MergeRequestDiscussions.create(
       mergeRequest.projectId,
@@ -132,8 +132,12 @@ export class MergeService {
     }
   }
 
+  public async getCountApproves(mergeRequest: MergeRequest): Promise<number> {
+    return this.approvesRepository.countBy({ mergeRequest });
+  }
+
   private async updateNote(mergeRequest: MergeRequest): Promise<number> {
-    const count = await this.approvesRepository.countBy({ mergeRequest });
+    const count = await this.getCountApproves(mergeRequest);
 
     await this.api.MergeRequestDiscussions.editNote(
       mergeRequest.projectId,

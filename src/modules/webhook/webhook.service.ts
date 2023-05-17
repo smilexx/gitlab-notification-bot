@@ -21,11 +21,20 @@ import { isWorkInProgress } from '../../utils/merge';
 import { isNotifyStatus } from '../../utils/pipeline';
 import { MergeService } from '../merge/merge.service';
 import { TelegramService } from '../telegram/telegram.service';
+import { MergeRequest } from 'src/entities/merge-request.entity';
 
 const templateMap = {
   [NotifyType.TagPush]: pug.compileFile('views/notify/tag.pug'),
   [NotifyType.MergeRequest]: pug.compileFile('views/notify/mergeRequest.pug'),
   [NotifyType.Pipeline]: pug.compileFile('views/notify/pipeline.pug'),
+};
+
+type UpdateMessageOptions = {
+  project: string;
+  user: string;
+  title: string;
+  url: string;
+  approves: number;
 };
 
 @Injectable()
@@ -180,5 +189,32 @@ export class WebHookService {
     mergeRequest.status = data.state;
 
     await this.mergeService.updateOne(mergeRequest);
+
+    await this.updateMessage(chat, mergeRequest, {
+      project: project?.path_with_namespace,
+      user: user?.name,
+      title: data?.title,
+      url: data.url,
+      approves: await this.mergeService.getCountApproves(mergeRequest),
+    });
+  };
+
+  private updateMessage = async (
+    chat: Chat,
+    mergeRequest: MergeRequest,
+    { project, user, title, url, approves }: UpdateMessageOptions,
+  ) => {
+    await this.telegramService.editMessage(
+      chat?.chatId,
+      mergeRequest.messageId,
+      templateMap[NotifyType.MergeRequest]({
+        project,
+        user,
+        title,
+        url,
+        approves,
+        totalApproves: MINIMAL_APPROVES,
+      }),
+    );
   };
 }
