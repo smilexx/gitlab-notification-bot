@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Chat } from './chat.entity';
 import { Approve } from './approve.entity';
+import { User } from './user.entity';
 
 @Entity({ name: 'merge_requests' })
 export class MergeRequest {
@@ -39,4 +40,7 @@ export class MergeRequest {
 
   @ManyToOne(() => Chat, (chat) => chat.mergeRequests)
   chat: Chat;
+
+  @ManyToOne(() => User, (user) => user.mergeRequests)
+  user: User;
 }

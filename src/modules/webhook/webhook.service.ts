@@ -21,7 +21,8 @@ import { isWorkInProgress } from '../../utils/merge';
 import { isNotifyStatus } from '../../utils/pipeline';
 import { MergeService } from '../merge/merge.service';
 import { TelegramService } from '../telegram/telegram.service';
-import { MergeRequest } from 'src/entities/merge-request.entity';
+import { MergeRequest } from '../../entities/merge-request.entity';
+import { User } from '../../entities/user.entity';
 
 const templateMap = {
   [NotifyType.TagPush]: pug.compileFile('views/notify/tag.pug'),
@@ -47,6 +48,8 @@ export class WebHookService {
     private chatsRepository: Repository<Chat>,
     @InjectRepository(Branch)
     private branchesRepository: Repository<Branch>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
     private readonly mergeService: MergeService,
   ) {}
 
@@ -149,12 +152,17 @@ export class WebHookService {
     let mergeRequest = await this.mergeService.findOneByUrl(data.url);
 
     if (isNil(mergeRequest)) {
+      const user = await this.usersRepository.findOneBy({
+        username: body.user.username,
+      });
+
       mergeRequest = await this.mergeService.createOne({
         url: data.url,
         status: data.state,
         mergeRequestId: data.iid,
         projectId: project.id,
         chat,
+        user,
       });
 
       const message = await this.telegramService.sendMessage(
@@ -177,6 +185,7 @@ export class WebHookService {
 
       if (mergeRequest.status === 'opened') {
         await this.mergeService.createDiscussion(mergeRequest);
+        await this.mergeService.setReviewer(mergeRequest);
       }
     }
 

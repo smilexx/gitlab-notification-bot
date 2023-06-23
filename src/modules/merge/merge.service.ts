@@ -2,7 +2,7 @@ import Resources from '@gitbeaker/core';
 import { Gitlab } from '@gitbeaker/rest';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { GITLAB_HOST, GITLAB_TOKEN, MINIMAL_APPROVES } from '../../config';
 import { Approve } from '../../entities/approve.entity';
 import { MergeRequest } from '../../entities/merge-request.entity';
@@ -32,7 +32,7 @@ export class MergeService {
   public async createOne(
     data: Pick<
       MergeRequest,
-      'url' | 'status' | 'mergeRequestId' | 'chat' | 'projectId'
+      'url' | 'status' | 'mergeRequestId' | 'chat' | 'projectId' | 'user'
     >,
   ) {
     return this.mergeRequestsRepository.save(data);
@@ -44,6 +44,28 @@ export class MergeService {
 
   public async findOneByUrl(url: string) {
     return this.mergeRequestsRepository.findOneBy({ url });
+  }
+
+  public async setReviewer(mergeRequest: MergeRequest): Promise<void> {
+    const reviewers = await this.userRepository.findBy({
+      mergeRequests: { projectId: mergeRequest.projectId },
+      id: Not(mergeRequest.user.id),
+    });
+
+    if (reviewers.length > 0) {
+      const selectedReviewer =
+        reviewers[Math.floor(Math.random() * reviewers.length)];
+
+      if (selectedReviewer && selectedReviewer.externalId) {
+        await this.api.MergeRequests.edit(
+          mergeRequest.projectId,
+          mergeRequest.mergeRequestId,
+          {
+            reviewerId: selectedReviewer.externalId,
+          },
+        );
+      }
+    }
   }
 
   public async createDiscussion(
@@ -71,12 +93,17 @@ export class MergeService {
     // TODO в пакете нету поля email
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { email, name } = approver;
+    const { email, name, username, id } = approver;
 
     let user = await this.userRepository.findOneBy({ email });
 
     if (!user) {
-      user = await this.userRepository.save({ email, name });
+      user = await this.userRepository.save({
+        email,
+        name,
+        username,
+        externalId: id,
+      });
     }
 
     const approve = await this.approvesRepository.findOneBy({
