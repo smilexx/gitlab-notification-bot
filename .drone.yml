@@ -1,0 +1,35 @@
+kind: pipeline
+type: docker
+name: default
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+  - name: build
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run
+    commands:
+      - while (! docker stats --no-stream ); do sleep 1; done
+      # - echo $DOCKER_PASSWORD | docker login --username nologin --password-stdin example.org
+      - DOCKER_BUILDKIT=1 docker build -t registry.smilexx.ru/gitlab-notification-bot:latest . --target production
+      - docker push registry.smilexx.ru/gitlab-notification-bot:latest
+
+services:
+- name: docker
+  image: docker:dind
+  privileged: true
+  volumes:
+  - name: dockersock
+    path: /var/run
+
+volumes:
+  - name: dockersock
+    temp: {}
+
+trigger:
+  branch:
+    - main
