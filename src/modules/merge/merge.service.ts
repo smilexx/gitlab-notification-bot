@@ -3,11 +3,11 @@ import { Gitlab } from '@gitbeaker/rest';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
+import type GitlabEvents from 'gitlab-event-types';
 import { GITLAB_HOST, GITLAB_TOKEN, MINIMAL_APPROVES } from '../../config';
 import { Approve } from '../../entities/approve.entity';
 import { MergeRequest } from '../../entities/merge-request.entity';
-import { User } from '../../entities/user.entity';
-import GitlabEvents from 'gitlab-event-types';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class MergeService {
@@ -18,8 +18,7 @@ export class MergeService {
     private mergeRequestsRepository: Repository<MergeRequest>,
     @InjectRepository(Approve)
     private approvesRepository: Repository<Approve>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private usersService: UsersService,
   ) {
     this.api = new Gitlab({
       token: GITLAB_TOKEN,
@@ -47,24 +46,18 @@ export class MergeService {
   }
 
   public async setReviewer(mergeRequest: MergeRequest): Promise<void> {
-    const reviewers = await this.userRepository.findBy({
-      mergeRequests: { projectId: mergeRequest.projectId },
-      id: Not(mergeRequest.user.id),
-    });
+    const reviewer = await this.usersService.getReviwerForUser(
+      mergeRequest.user,
+    );
 
-    if (reviewers.length > 0) {
-      const selectedReviewer =
-        reviewers[Math.floor(Math.random() * reviewers.length)];
-
-      if (selectedReviewer && selectedReviewer.externalId) {
-        await this.api.MergeRequests.edit(
-          mergeRequest.projectId,
-          mergeRequest.mergeRequestId,
-          {
-            reviewerId: selectedReviewer.externalId,
-          },
-        );
-      }
+    if (reviewer && reviewer.externalId) {
+      await this.api.MergeRequests.edit(
+        mergeRequest.projectId,
+        mergeRequest.mergeRequestId,
+        {
+          reviewerId: reviewer.externalId,
+        },
+      );
     }
   }
 
@@ -90,21 +83,7 @@ export class MergeService {
     mergeRequest: MergeRequest,
     approver: GitlabEvents.User,
   ): Promise<void> {
-    // TODO в пакете нету поля email
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { email, name, username, id } = approver;
-
-    let user = await this.userRepository.findOneBy({ email });
-
-    if (!user) {
-      user = await this.userRepository.save({
-        email,
-        name,
-        username,
-        externalId: id,
-      });
-    }
+    const user = await this.usersService.findOneOrCreate(approver);
 
     const approve = await this.approvesRepository.findOneBy({
       mergeRequest,
@@ -122,11 +101,7 @@ export class MergeService {
     mergeRequest: MergeRequest,
     approver: GitlabEvents.User,
   ): Promise<void> {
-    // TODO в пакете нету поля email
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { email } = approver;
-    const user = await this.userRepository.findOneBy({ email });
+    const user = await this.usersService.findOneOrCreate(approver);
 
     if (user) {
       await this.approvesRepository.delete({ mergeRequest, user });

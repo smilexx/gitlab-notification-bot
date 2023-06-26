@@ -22,7 +22,7 @@ import { isNotifyStatus } from '../../utils/pipeline';
 import { MergeService } from '../merge/merge.service';
 import { TelegramService } from '../telegram/telegram.service';
 import { MergeRequest } from '../../entities/merge-request.entity';
-import { User } from '../../entities/user.entity';
+import { UsersService } from '../users/users.service';
 
 const templateMap = {
   [NotifyType.TagPush]: pug.compileFile('views/notify/tag.pug'),
@@ -48,9 +48,8 @@ export class WebHookService {
     private chatsRepository: Repository<Chat>,
     @InjectRepository(Branch)
     private branchesRepository: Repository<Branch>,
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
     private readonly mergeService: MergeService,
+    private readonly usersService: UsersService,
   ) {}
 
   public notify = async (
@@ -152,9 +151,7 @@ export class WebHookService {
     let mergeRequest = await this.mergeService.findOneByUrl(data.url);
 
     if (isNil(mergeRequest)) {
-      const user = await this.usersRepository.findOneBy({
-        username: body.user.username,
-      });
+      const user = await this.usersService.findOneOrCreate(body.user);
 
       mergeRequest = await this.mergeService.createOne({
         url: data.url,

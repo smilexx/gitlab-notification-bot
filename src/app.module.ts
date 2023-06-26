@@ -18,6 +18,7 @@ import { MergeModule } from './modules/merge/merge.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
 import { TelegramService } from './modules/telegram/telegram.service';
 import { WebHookModule } from './modules/webhook/webhook.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { WebHookModule } from './modules/webhook/webhook.module';
     TelegramModule,
     WebHookModule,
     MergeModule,
+    UsersModule,
   ],
   controllers: [AppController],
 })

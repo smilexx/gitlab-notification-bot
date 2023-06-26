@@ -5,13 +5,14 @@ import { Chat } from '../../entities/chat.entity';
 import { MergeModule } from '../merge/merge.module';
 import { TelegramModule } from '../telegram/telegram.module';
 import { WebHookService } from './webhook.service';
-import { User } from '../../entities/user.entity';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     TelegramModule,
     MergeModule,
-    TypeOrmModule.forFeature([Chat, Branch, User]),
+    UsersModule,
+    TypeOrmModule.forFeature([Chat, Branch]),
   ],
   providers: [WebHookService],
   exports: [WebHookService],
