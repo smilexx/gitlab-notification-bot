@@ -13,10 +13,20 @@ steps:
       - name: dockersock
         path: /var/run
     commands:
+      - export TAG='registry.smilexx.ru/${DRONE_REPO}:${DRONE_COMMIT_SHA:0:8}'
+      - export TAG_LATEST='registry.smilexx.ru/${DRONE_REPO}:latest'
       - while (! docker stats --no-stream ); do sleep 1; done
-      # - echo $DOCKER_PASSWORD | docker login --username nologin --password-stdin example.org
-      - DOCKER_BUILDKIT=1 docker build -t registry.smilexx.ru/gitlab-notification-bot:latest . --target production
-      - docker push registry.smilexx.ru/gitlab-notification-bot:latest
+      - DOCKER_BUILDKIT=1 docker build -t $${TAG} . --target production
+      - docker push $${TAG}
+      - docker tag $${TAG} $${TAG_LATEST}
+      - docker push $${TAG_LATEST}
+
+  - name: deploy
+    image: curlimages/curl
+    pull: if-not-exists
+    commands:
+      - curl --location --fail --request POST 'https://docker.smilexx.ru/api/stacks/webhooks/4a632103-14ea-4b94-b36e-4ecfeb13c103'
+
 
 services:
 - name: docker

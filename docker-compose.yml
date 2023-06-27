@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    build: .
+    image: registry.smilexx.ru/smile/gitlab-notification-bot:${SERVICE_TAG:-latest}
     environment:
       - APP_URL=https://${DNS_DOMAIN}/bot-notify
       - BOT_TOKEN=${BOT_TOKEN}
