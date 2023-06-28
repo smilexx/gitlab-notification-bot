@@ -19,6 +19,8 @@ import { TelegramModule } from './modules/telegram/telegram.module';
 import { TelegramService } from './modules/telegram/telegram.service';
 import { WebHookModule } from './modules/webhook/webhook.module';
 import { UsersModule } from './modules/users/users.module';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { Project } from './entities/project.entity';
 
 @Module({
   imports: [
@@ -33,9 +35,10 @@ import { UsersModule } from './modules/users/users.module';
       username: DATABASE_USER,
       password: DATABASE_PASSWORD,
       database: DATABASE_NAME,
-      entities: [Chat, Branch, MergeRequest, Approve, User],
+      entities: [Chat, Branch, MergeRequest, Approve, User, Project],
       ssl: false,
       synchronize: true,
+      namingStrategy: new SnakeNamingStrategy(),
     }),
     TelegramModule,
     WebHookModule,

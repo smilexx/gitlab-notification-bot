@@ -8,6 +8,7 @@ import {
 import { Chat } from './chat.entity';
 import { Approve } from './approve.entity';
 import { User } from './user.entity';
+import { Project } from './project.entity';
 
 @Entity({ name: 'merge_requests' })
 export class MergeRequest {
@@ -43,4 +44,7 @@ export class MergeRequest {
 
   @ManyToOne(() => User, (user) => user.mergeRequests)
   user: User;
+
+  @ManyToOne(() => Project, (project) => project.mergeRequests)
+  project: Project;
 }
