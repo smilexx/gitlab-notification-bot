@@ -18,7 +18,7 @@ export class UsersService {
 
     try {
       return await this.usersRepository.findOneByOrFail({
-        username,
+        email,
       });
     } catch (error: any) {
       return this.usersRepository.save({
