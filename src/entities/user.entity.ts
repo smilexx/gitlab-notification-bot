@@ -1,6 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Approve } from './approve.entity';
 import { MergeRequest } from './merge-request.entity';
+import { Project } from './project.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -24,4 +32,8 @@ export class User {
 
   @OneToMany(() => MergeRequest, (mergeRequest) => mergeRequest.user)
   mergeRequests: MergeRequest[];
+
+  @ManyToMany(() => Project)
+  @JoinTable({ name: 'users_projects' })
+  projects: Project[];
 }

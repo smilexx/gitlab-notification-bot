@@ -38,7 +38,7 @@ import { ProjectsModule } from './modules/projects/projects.module';
       database: DATABASE_NAME,
       entities: [Chat, Branch, MergeRequest, Approve, User, Project],
       ssl: false,
-      synchronize: true,
+      synchronize: false,
       namingStrategy: new SnakeNamingStrategy(),
     }),
     TelegramModule,
