@@ -23,6 +23,7 @@ import { MergeService } from '../merge/merge.service';
 import { TelegramService } from '../telegram/telegram.service';
 import { MergeRequest } from '../../entities/merge-request.entity';
 import { UsersService } from '../users/users.service';
+import { ProjectsService } from '../projects/projects.service';
 
 const templateMap = {
   [NotifyType.TagPush]: pug.compileFile('views/notify/tag.pug'),
@@ -50,6 +51,7 @@ export class WebHookService {
     private branchesRepository: Repository<Branch>,
     private readonly mergeService: MergeService,
     private readonly usersService: UsersService,
+    private readonly projectsService: ProjectsService,
   ) {}
 
   public notify = async (
@@ -142,7 +144,9 @@ export class WebHookService {
   };
 
   private onMergeRequest = async (chat: Chat, body: MergeRequestEvent) => {
-    const { project, object_attributes: data, user } = body || {};
+    const { object_attributes: data } = body || {};
+    const user = await this.usersService.findOneOrCreate(body.user);
+    const project = await this.projectsService.findOneOrCreate(body.project);
 
     if (isWorkInProgress(data)) {
       return;
@@ -151,13 +155,11 @@ export class WebHookService {
     let mergeRequest = await this.mergeService.findOneByUrl(data.url);
 
     if (isNil(mergeRequest)) {
-      const user = await this.usersService.findOneOrCreate(body.user);
-
       mergeRequest = await this.mergeService.createOne({
         url: data.url,
         status: data.state,
         mergeRequestId: data.iid,
-        projectId: project.id,
+        project,
         chat,
         user,
       });
@@ -165,7 +167,7 @@ export class WebHookService {
       const message = await this.telegramService.sendMessage(
         chat?.chatId,
         templateMap[NotifyType.MergeRequest]({
-          project: project?.path_with_namespace,
+          project: project?.pathWithNamespace,
           user: user?.name,
           title: data?.title,
           url: data.url,
@@ -197,7 +199,7 @@ export class WebHookService {
     await this.mergeService.updateOne(mergeRequest);
 
     await this.updateMessage(chat, mergeRequest, {
-      project: project?.path_with_namespace,
+      project: project?.pathWithNamespace,
       user: user?.name,
       title: data?.title,
       url: data.url,

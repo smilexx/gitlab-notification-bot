@@ -6,12 +6,14 @@ import { MergeModule } from '../merge/merge.module';
 import { TelegramModule } from '../telegram/telegram.module';
 import { WebHookService } from './webhook.service';
 import { UsersModule } from '../users/users.module';
+import { ProjectsModule } from '../projects/projects.module';
 
 @Module({
   imports: [
     TelegramModule,
     MergeModule,
     UsersModule,
+    ProjectsModule,
     TypeOrmModule.forFeature([Chat, Branch]),
   ],
   providers: [WebHookService],

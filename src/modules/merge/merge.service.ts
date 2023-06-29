@@ -2,11 +2,11 @@ import Resources from '@gitbeaker/core';
 import { Gitlab } from '@gitbeaker/rest';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
-import type GitlabEvents from 'gitlab-event-types';
+import { Repository } from 'typeorm';
 import { GITLAB_HOST, GITLAB_TOKEN, MINIMAL_APPROVES } from '../../config';
 import { Approve } from '../../entities/approve.entity';
 import { MergeRequest } from '../../entities/merge-request.entity';
+import { User } from '../../entities/user.entity';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class MergeService {
   public async createOne(
     data: Pick<
       MergeRequest,
-      'url' | 'status' | 'mergeRequestId' | 'chat' | 'projectId' | 'user'
+      'url' | 'status' | 'mergeRequestId' | 'chat' | 'project' | 'user'
     >,
   ) {
     return this.mergeRequestsRepository.save(data);
@@ -52,7 +52,7 @@ export class MergeService {
 
     if (reviewer && reviewer.externalId) {
       await this.api.MergeRequests.edit(
-        mergeRequest.projectId,
+        mergeRequest.project.externalId,
         mergeRequest.mergeRequestId,
         {
           reviewerId: reviewer.externalId,
@@ -67,7 +67,7 @@ export class MergeService {
     const count = await this.getCountApproves(mergeRequest);
 
     const result = await this.api.MergeRequestDiscussions.create(
-      mergeRequest.projectId,
+      mergeRequest.project.externalId,
       mergeRequest.mergeRequestId,
       `[${count}/${MINIMAL_APPROVES}]`,
     );
@@ -79,12 +79,7 @@ export class MergeService {
     return this.mergeRequestsRepository.save(mergeRequest);
   }
 
-  public async approve(
-    mergeRequest: MergeRequest,
-    approver: GitlabEvents.User,
-  ): Promise<void> {
-    const user = await this.usersService.findOneOrCreate(approver);
-
+  public async approve(mergeRequest: MergeRequest, user: User): Promise<void> {
     const approve = await this.approvesRepository.findOneBy({
       mergeRequest,
       user,
@@ -99,10 +94,8 @@ export class MergeService {
 
   public async unapprove(
     mergeRequest: MergeRequest,
-    approver: GitlabEvents.User,
+    user: User,
   ): Promise<void> {
-    const user = await this.usersService.findOneOrCreate(approver);
-
     if (user) {
       await this.approvesRepository.delete({ mergeRequest, user });
     }
@@ -113,7 +106,7 @@ export class MergeService {
   public async unlock(mergeRequest: MergeRequest) {
     if (mergeRequest.discussionId) {
       await this.api.MergeRequestDiscussions.resolve(
-        mergeRequest.projectId,
+        mergeRequest.project.externalId,
         mergeRequest.mergeRequestId,
         mergeRequest.discussionId,
         true,
@@ -124,7 +117,7 @@ export class MergeService {
   public async lock(mergeRequest: MergeRequest): Promise<void> {
     if (mergeRequest.discussionId && mergeRequest.noteId) {
       await this.api.MergeRequestDiscussions.resolve(
-        mergeRequest.projectId,
+        mergeRequest.project.externalId,
         mergeRequest.mergeRequestId,
         mergeRequest.discussionId,
         false,
@@ -142,7 +135,7 @@ export class MergeService {
     const count = await this.getCountApproves(mergeRequest);
 
     await this.api.MergeRequestDiscussions.editNote(
-      mergeRequest.projectId,
+      mergeRequest.project.externalId,
       mergeRequest.mergeRequestId,
       mergeRequest.discussionId,
       mergeRequest.noteId,

@@ -24,9 +24,6 @@ export class MergeRequest {
   @Column({ nullable: true, name: 'discussion_id' })
   discussionId: string;
 
-  @Column({ name: 'project_id' })
-  projectId: number;
-
   @Column({ nullable: true, name: 'note_id' })
   noteId: number;
 

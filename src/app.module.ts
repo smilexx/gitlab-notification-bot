@@ -21,6 +21,7 @@ import { WebHookModule } from './modules/webhook/webhook.module';
 import { UsersModule } from './modules/users/users.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { Project } from './entities/project.entity';
+import { ProjectsModule } from './modules/projects/projects.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { Project } from './entities/project.entity';
     WebHookModule,
     MergeModule,
     UsersModule,
+    ProjectsModule,
   ],
   controllers: [AppController],
 })

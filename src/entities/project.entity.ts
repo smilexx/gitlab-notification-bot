@@ -12,6 +12,6 @@ export class Project {
   @Column({ nullable: true, name: 'path_with_namespace' })
   pathWithNamespace: string;
 
-  @OneToMany(() => MergeRequest, (mergeRequest) => mergeRequest.user)
+  @OneToMany(() => MergeRequest, (mergeRequest) => mergeRequest.project)
   mergeRequests: MergeRequest[];
 }
