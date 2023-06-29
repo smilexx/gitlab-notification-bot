@@ -53,6 +53,10 @@ FROM node:18-alpine As production
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 COPY --chown=node:node --from=build /usr/src/app/views ./views
+COPY --chown=node:node --from=build /usr/src/app/package.json ./package.json
+COPY --chown=node:node --from=build /usr/src/app/start.sh ./start.sh
+
+RUN chmod +x ./start.sh
 
 # Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+CMD ["./start.sh"]

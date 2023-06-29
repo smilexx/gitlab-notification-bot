@@ -19,5 +19,5 @@ export default new DataSource({
   database: process.env.DATABASE_NAME,
   entities: [Chat, Branch, MergeRequest, Approve, User, Project],
   namingStrategy: new SnakeNamingStrategy(),
-  migrations: ['./migrations/*.ts'],
+  migrations: ['./dist/migrations/*.js'],
 });

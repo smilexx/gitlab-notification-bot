@@ -1,4 +1,4 @@
 #!/bin/sh
-npm run typeorm migration:run -- -d ./dist/typeorm.config.js;
+npm run typeorm migration:run -- -d ./dist/src/typeorm.config.js;
 
-node ./dist/main.js;
+node ./dist/src/main.js;
