@@ -1,6 +1,6 @@
 import Resources from '@gitbeaker/core';
 import { Gitlab } from '@gitbeaker/rest';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GITLAB_HOST, GITLAB_TOKEN, MINIMAL_APPROVES } from '../../config';
@@ -12,6 +12,8 @@ import { UsersService } from '../users/users.service';
 @Injectable()
 export class MergeService {
   private api: Resources.Gitlab = null;
+
+  private readonly logger = new Logger(MergeService.name);
 
   constructor(
     @InjectRepository(MergeRequest)
@@ -133,6 +135,8 @@ export class MergeService {
 
   private async updateNote(mergeRequest: MergeRequest): Promise<number> {
     const count = await this.getCountApproves(mergeRequest);
+
+    this.logger.debug('update note action', { mergeRequest });
 
     await this.api.MergeRequestDiscussions.editNote(
       mergeRequest.project.externalId,

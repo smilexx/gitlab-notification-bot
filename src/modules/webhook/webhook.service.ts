@@ -212,17 +212,19 @@ export class WebHookService {
     mergeRequest: MergeRequest,
     { project, user, title, url, approves }: UpdateMessageOptions,
   ) => {
-    await this.telegramService.editMessage(
-      chat?.chatId,
-      mergeRequest.messageId,
-      templateMap[NotifyType.MergeRequest]({
-        project,
-        user,
-        title,
-        url,
-        approves,
-        totalApproves: MINIMAL_APPROVES,
-      }),
-    );
+    if (mergeRequest.messageId) {
+      await this.telegramService.editMessage(
+        chat?.chatId,
+        mergeRequest.messageId,
+        templateMap[NotifyType.MergeRequest]({
+          project,
+          user,
+          title,
+          url,
+          approves,
+          totalApproves: MINIMAL_APPROVES,
+        }),
+      );
+    }
   };
 }
