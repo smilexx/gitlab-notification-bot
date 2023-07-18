@@ -177,6 +177,7 @@ export class WebHookService {
       );
 
       this.logger.debug('send message', message);
+      this.logger.log('merge request', { mergeRequest, project, user });
 
       mergeRequest.messageId = message.message_id;
 
