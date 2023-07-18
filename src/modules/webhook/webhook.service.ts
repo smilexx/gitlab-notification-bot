@@ -184,7 +184,7 @@ export class WebHookService {
 
       if (mergeRequest.status === 'opened') {
         await this.mergeService.createDiscussion(mergeRequest);
-        await this.mergeService.setReviewer(mergeRequest);
+        await this.mergeService.setDefaultReviewer(mergeRequest);
       }
     }
 

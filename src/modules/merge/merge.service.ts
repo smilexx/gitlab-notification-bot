@@ -47,19 +47,18 @@ export class MergeService {
     return this.mergeRequestsRepository.findOneBy({ url });
   }
 
-  public async setReviewer(mergeRequest: MergeRequest): Promise<void> {
-    const reviewer = await this.usersService.getReviwerForUser(
-      mergeRequest.user,
-    );
-
-    if (reviewer && reviewer.externalId) {
+  public async setDefaultReviewer(mergeRequest: MergeRequest): Promise<void> {
+    try {
       await this.api.MergeRequests.edit(
         mergeRequest.project.externalId,
         mergeRequest.mergeRequestId,
         {
-          reviewerId: reviewer.externalId,
+          // TODO переделать в настройки
+          reviewerId: 60,
         },
       );
+    } catch (error) {
+      this.logger.error('error set reviewer', error);
     }
   }
 
