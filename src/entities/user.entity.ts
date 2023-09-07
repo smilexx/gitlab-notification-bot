@@ -18,9 +18,6 @@ export class User {
   @Column({ nullable: true, name: 'external_id' })
   externalId: number;
 
-  @Column({ unique: true })
-  email: string;
-
   @Column({ nullable: true })
   name: string;
 

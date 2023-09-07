@@ -14,15 +14,14 @@ export class UsersService {
   async findOneOrCreate(user: GitlabEvents.User): Promise<User> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { email, name, username, id } = user;
+    const { name, username, id } = user;
 
     try {
       return await this.usersRepository.findOneByOrFail({
-        email,
+        username,
       });
     } catch (error: any) {
       return this.usersRepository.save({
-        email,
         name,
         username,
         externalId: id,
