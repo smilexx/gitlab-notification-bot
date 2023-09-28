@@ -62,13 +62,18 @@ export class TelegramService {
     chatId: string | number,
     messageId: number,
     text: string,
-  ) =>
-    this.bot.editMessageText(text, {
-      chat_id: chatId,
-      message_id: messageId,
-      parse_mode: 'HTML',
-      disable_web_page_preview: true,
-    });
+  ) => {
+    try {
+      this.bot.editMessageText(text, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true,
+      });
+    } catch (e) {
+      return false;
+    }
+  };
 
   private webhookError = (error) => {
     this.logger.error(error);
