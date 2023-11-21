@@ -18,7 +18,7 @@ export class MergeRequest {
   @Column({ unique: true })
   url: string;
 
-  @Column({ nullable: true, name: 'megre_request_id' })
+  @Column({ nullable: true, name: 'merge_request_id' })
   mergeRequestId: number;
 
   @Column({ nullable: true, name: 'discussion_id' })
