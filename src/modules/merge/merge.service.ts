@@ -44,7 +44,10 @@ export class MergeService {
   }
 
   public async findOneByUrl(url: string) {
-    return this.mergeRequestsRepository.findOneBy({ url });
+    return this.mergeRequestsRepository.findOne({
+      where: { url },
+      relations: ['project'],
+    });
   }
 
   public async setDefaultReviewer(mergeRequest: MergeRequest): Promise<void> {
