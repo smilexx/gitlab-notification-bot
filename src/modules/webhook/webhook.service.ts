@@ -185,14 +185,16 @@ export class WebHookService {
 
       if (mergeRequest.status === 'opened') {
         await this.mergeService.createDiscussion(mergeRequest);
-        await this.mergeService.setDefaultReviewer(mergeRequest);
+        // await this.mergeService.setDefaultReviewer(mergeRequest);
       }
     }
 
-    if (data.action === 'approved') {
-      await this.mergeService.approve(mergeRequest, user);
-    } else if (data.action === 'unapproved') {
-      await this.mergeService.unapprove(mergeRequest, user);
+    if (mergeRequest.user.id !== user.id) {
+      if (data.action === 'approved') {
+        await this.mergeService.approve(mergeRequest, user);
+      } else if (data.action === 'unapproved') {
+        await this.mergeService.unapprove(mergeRequest, user);
+      }
     }
 
     mergeRequest.status = data.state;

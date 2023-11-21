@@ -46,7 +46,7 @@ export class MergeService {
   public async findOneByUrl(url: string) {
     return this.mergeRequestsRepository.findOne({
       where: { url },
-      relations: ['project'],
+      relations: ['project', 'user'],
     });
   }
 
