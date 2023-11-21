@@ -198,34 +198,5 @@ export class WebHookService {
     mergeRequest.status = data.state;
 
     await this.mergeService.updateOne(mergeRequest);
-
-    await this.updateMessage(chat, mergeRequest, {
-      project: project?.pathWithNamespace,
-      user: user?.name,
-      title: data?.title,
-      url: data.url,
-      approves: await this.mergeService.getCountApproves(mergeRequest),
-    });
-  };
-
-  private updateMessage = async (
-    chat: Chat,
-    mergeRequest: MergeRequest,
-    { project, user, title, url, approves }: UpdateMessageOptions,
-  ) => {
-    if (mergeRequest.messageId) {
-      await this.telegramService.editMessage(
-        chat?.chatId,
-        mergeRequest.messageId,
-        templateMap[NotifyType.MergeRequest]({
-          project,
-          user,
-          title,
-          url,
-          approves,
-          totalApproves: MINIMAL_APPROVES,
-        }),
-      );
-    }
   };
 }
