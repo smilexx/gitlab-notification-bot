@@ -1328,13 +1328,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:27.4.1":
-  version: 27.4.1
-  resolution: "@types/jest@npm:27.4.1"
+"@types/jest@npm:27.5.2":
+  version: 27.5.2
+  resolution: "@types/jest@npm:27.5.2"
   dependencies:
     jest-matcher-utils: "npm:^27.0.0"
     pretty-format: "npm:^27.0.0"
-  checksum: 10c0/e1dc86570531aefda453ec363a3c6bacf07328b5247b3869eddc10f62d50fa8e52e79c5aafcac7fa7798be5445dab472ab3b24cdd8dfc92820febec735c081eb
+  checksum: 10c0/29ef3da9b94a15736a67fc13956f385ac2ba2c6297f50d550446842c278f2e0d9f343dcd8e31c321ada5d8a1bd67bc1d79c7b6ff1802d55508c692123b3d9794
   languageName: node
   linkType: hard
 
@@ -4412,7 +4412,7 @@ __metadata:
     "@nestjs/testing": "npm:^9.4.0"
     "@nestjs/typeorm": "npm:^9.0.0"
     "@types/express": "npm:^4.17.13"
-    "@types/jest": "npm:27.4.1"
+    "@types/jest": "npm:27.5.2"
     "@types/node": "npm:^18.0.0"
     "@types/node-telegram-bot-api": "npm:^0.61.6"
     "@types/pug": "npm:^2.0.6"
