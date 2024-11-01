@@ -28,7 +28,7 @@
   "dependencies": {
     "@gitbeaker/core": "^37.0.0",
     "@gitbeaker/rest": "^37.0.0",
-    "@nestjs/common": "^9.4.0",
+    "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^2.3.0",
     "@nestjs/core": "^9.4.0",
     "@nestjs/platform-express": "^9.4.0",

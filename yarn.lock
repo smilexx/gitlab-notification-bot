@@ -1019,27 +1019,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^9.4.0":
-  version: 9.4.3
-  resolution: "@nestjs/common@npm:9.4.3"
+"@nestjs/common@npm:^10.0.0":
+  version: 10.4.6
+  resolution: "@nestjs/common@npm:10.4.6"
   dependencies:
     iterare: "npm:1.2.1"
-    tslib: "npm:2.5.3"
+    tslib: "npm:2.7.0"
     uid: "npm:2.0.2"
   peerDependencies:
-    cache-manager: <=5
     class-transformer: "*"
     class-validator: "*"
-    reflect-metadata: ^0.1.12
+    reflect-metadata: ^0.1.12 || ^0.2.0
     rxjs: ^7.1.0
   peerDependenciesMeta:
-    cache-manager:
-      optional: true
     class-transformer:
       optional: true
     class-validator:
       optional: true
-  checksum: 10c0/4776643f768ed32eff4b72f1d8ed2103a3e689e04d63b17d307776aaedc4ea022ba3edfd97a8d59812633f53b12bcb4f45d7b09af8c5df532eaead355e5dfec3
+  checksum: 10c0/8bfa30ffbca605ae5b5c1b79d0fc6f9edc3b4538880e083dcde7a6e6ae5721d4bd64212a768eb9d921be878da7098e2ca2da390eedb97e4b3a724dfb6039d9e7
   languageName: node
   linkType: hard
 
@@ -4505,7 +4502,7 @@ __metadata:
     "@gitbeaker/core": "npm:^37.0.0"
     "@gitbeaker/rest": "npm:^37.0.0"
     "@nestjs/cli": "npm:^10.0.0"
-    "@nestjs/common": "npm:^9.4.0"
+    "@nestjs/common": "npm:^10.0.0"
     "@nestjs/config": "npm:^2.3.0"
     "@nestjs/core": "npm:^9.4.0"
     "@nestjs/platform-express": "npm:^9.4.0"
@@ -8799,6 +8796,13 @@ __metadata:
   version: 2.5.3
   resolution: "tslib@npm:2.5.3"
   checksum: 10c0/4cb1817d34fae5b27d146e6c4a468d4155097d95c1335d0bc9690f11f33e63844806bf4ed6d97c30c72b8d85261b66cbbe16d871d9c594ac05701ec83e62a607
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.7.0":
+  version: 2.7.0
+  resolution: "tslib@npm:2.7.0"
+  checksum: 10c0/469e1d5bf1af585742128827000711efa61010b699cb040ab1800bcd3ccdd37f63ec30642c9e07c4439c1db6e46345582614275daca3e0f4abae29b0083f04a6
   languageName: node
   linkType: hard
 
