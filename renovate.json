@@ -9,60 +9,31 @@
 			"groupName": "nest",
 			"matchPackageNames": ["@nestjs/**"],
 			"matchUpdateTypes": ["patch", "minor", "major"]
-		}
-    ],
-    "extends": [
-        "group:nodeJs",
-        "group:allApollographql",
-        "group:codemirror",
-        "group:flyway",
-        "group:fortawesome",
-        "group:fusionjs",
-        "group:githubArtifactActions",
-        "group:glimmer",
-        "group:goOpenapi",
-        "group:hibernateCore",
-        "group:hibernateValidator",
-        "group:hibernateOgm",
-        "group:hibernateCommons",
-        "group:illuminate",
-        "group:jekyllEcosystem",
-        "group:jestPlusTSJest",
-        "group:jestPlusTypes",
-        "group:jwtFramework",
-        "group:kubernetes",
-        "group:phpstan",
-        "group:polymer",
-        "group:react",
-        "group:remark",
-        "group:resilience4j",
-        "group:rubyOnRails",
-        "group:rubyOmniauth",
-        "group:socketio",
-        "group:springAmqp",
-        "group:springAndroid",
-        "group:springBatch",
-        "group:springBoot",
-        "group:springCloud",
-        "group:springCore",
-        "group:springData",
-        "group:springHateoas",
-        "group:springIntegration",
-        "group:springKafka",
-        "group:springLdap",
-        "group:springMobile",
-        "group:springOsgi",
-        "group:springRestDocs",
-        "group:springRoo",
-        "group:springScala",
-        "group:springSecurity",
-        "group:springSession",
-        "group:springShell",
-        "group:springSocial",
-        "group:springStatemachine",
-        "group:springWebflow",
-        "group:springWs",
-        "group:symfony"
+		},
+        {
+            "extends": [
+              "packages:linters"
+            ],
+            "groupName": "linters"
+        },
+        {
+            "commitMessageTopic": "Node.js",
+            "matchDatasources": [
+                "docker"
+            ],
+            "matchPackageNames": [
+                "/(?:^|/)node$/",
+                "!calico/node",
+                "!docker.io/calico/node",
+                "!kindest/node"
+            ]
+        },
+        {
+            "extends": [
+              "packages:test"
+            ],
+            "groupName": "test packages"
+        }
     ],
     "lockFileMaintenance": {
       "enabled": true,
