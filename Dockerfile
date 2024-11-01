@@ -2,7 +2,7 @@
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
 
-FROM node:22.10.0-alpine AS development
+FROM node:22.11.0-alpine AS development
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -40,7 +40,7 @@ RUN yarn build
 # PRODUCTION
 ###################
 
-FROM node:22.10.0-alpine AS production
+FROM node:22.11.0-alpine AS production
 
 RUN apk add --no-cache curl
 
