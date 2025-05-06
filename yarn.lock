@@ -1738,12 +1738,12 @@ __metadata:
   linkType: hard
 
 "@types/node-telegram-bot-api@npm:^0.64.0":
-  version: 0.64.7
-  resolution: "@types/node-telegram-bot-api@npm:0.64.7"
+  version: 0.64.8
+  resolution: "@types/node-telegram-bot-api@npm:0.64.8"
   dependencies:
     "@types/node": "npm:*"
     "@types/request": "npm:*"
-  checksum: 10c0/5466d1fad4ae27a22d4ae224d1a9d2822898766adaa356f2cbbeb91cd65ce8c5350c1172443f785a7279367e84a280d4707b92ce8f49269d6993239a8c29eb3c
+  checksum: 10c0/43a8e528bb15d0643a00e1422f557e98c66a5f16da64ed7f9083d9e15343ef14676c5d0b300ba6d11910f6596a5e26774715742a59ab0af98f47da9bacd7718e
   languageName: node
   linkType: hard
 
