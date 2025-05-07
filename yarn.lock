@@ -4589,9 +4589,9 @@ __metadata:
   linkType: hard
 
 "gitlab-event-types@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "gitlab-event-types@npm:2.1.0"
-  checksum: 10c0/5716dc46635370c485ff3de632f9397431a5941943f5f2172f32934524c2332fb606c5833a366a2e20c3cd638a92db176239fdb7973eb58540044665c7b8a3f1
+  version: 2.1.1
+  resolution: "gitlab-event-types@npm:2.1.1"
+  checksum: 10c0/5ca0bb2fdd4b3a2a723e02a7571322b7290328c481a008e190d4b71ad9ecc8bc5cd090c25eaa2b1d047cebd176ed77683f7877618d07758c7c1a51652643bc46
   languageName: node
   linkType: hard
 
