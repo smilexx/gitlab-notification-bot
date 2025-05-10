@@ -1815,12 +1815,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ramda@npm:^0.28.15":
-  version: 0.28.25
-  resolution: "@types/ramda@npm:0.28.25"
+"@types/ramda@npm:^0.30.0":
+  version: 0.30.2
+  resolution: "@types/ramda@npm:0.30.2"
   dependencies:
-    ts-toolbelt: "npm:^6.15.1"
-  checksum: 10c0/4abb7c8539eadb11a62ddd80072363870bb33b189096a1dc71d2351ccba9796c26a43b79435312b8e1f3335ac7d5a77fc4deb2f5b747217bfdf262f519c9caf3
+    types-ramda: "npm:^0.30.1"
+  checksum: 10c0/dda95008860f594eb7b4fd9819adeb2dcd4d4e2baca6cb33f692f6f8ea76d04a7fd81f9a057c5c67555612769e5592cb15f91de6c9f8b619b8b1d806d19dc9ea
   languageName: node
   linkType: hard
 
@@ -4872,7 +4872,7 @@ __metadata:
     "@types/node": "npm:^22.0.0"
     "@types/node-telegram-bot-api": "npm:^0.64.0"
     "@types/pug": "npm:^2.0.6"
-    "@types/ramda": "npm:^0.28.15"
+    "@types/ramda": "npm:^0.30.0"
     "@types/supertest": "npm:^6.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.0.0"
     "@typescript-eslint/parser": "npm:^8.0.0"
@@ -4890,7 +4890,7 @@ __metadata:
     pino-pretty: "npm:^10.0.0"
     prettier: "npm:^3.0.0"
     pug: "npm:^3.0.2"
-    ramda: "npm:^0.28.0"
+    ramda: "npm:^0.30.0"
     reflect-metadata: "npm:^0.2.0"
     rimraf: "npm:^5.0.0"
     rxjs: "npm:^7.8.0"
@@ -7818,10 +7818,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ramda@npm:^0.28.0":
-  version: 0.28.0
-  resolution: "ramda@npm:0.28.0"
-  checksum: 10c0/0f9dc0cc3b0432ff047f1e2a5e58860c531a84574674c0f52fef535efc6e1e07fa3851102fff3da7dd551a592c743f6f6fa521379a6aa5fe50266f8af8f0b570
+"ramda@npm:^0.30.0":
+  version: 0.30.1
+  resolution: "ramda@npm:0.30.1"
+  checksum: 10c0/3ea3e35c80e1a1b78c23de0c72d3382c3446f42052b113b851f1b7fc421e33a45ce92e7aef3c705cc6de3812a209d03417af5c264f67126cda539fd66c8bea71
   languageName: node
   linkType: hard
 
@@ -9103,10 +9103,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-toolbelt@npm:^6.15.1":
-  version: 6.15.5
-  resolution: "ts-toolbelt@npm:6.15.5"
-  checksum: 10c0/c2c5cf77b006cbedb836abb260e9544aef268b0fc718e52db44600308ac6836c8c1824f57373ed72f920b92eb1daa78d1a9cec4c12368230a208e0723de9c2f0
+"ts-toolbelt@npm:^9.6.0":
+  version: 9.6.0
+  resolution: "ts-toolbelt@npm:9.6.0"
+  checksum: 10c0/838f9a2f0fe881d5065257a23b402c41315b33ff987b73db3e2b39fcb70640c4c7220e1ef118ed5676763543724fdbf4eda7b0e2c17acb667ed1401336af9f8c
   languageName: node
   linkType: hard
 
@@ -9370,6 +9370,15 @@ __metadata:
     typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
     typeorm-ts-node-esm: cli-ts-node-esm.js
   checksum: 10c0/a1443355aab8250d467fe4f689f1ae1614ad3af645a1565019bbc9fb710e784d4c27ad12d824baed4d4972e0566262dea0c0cb6ecc4a4fedc3dab7795fd453a8
+  languageName: node
+  linkType: hard
+
+"types-ramda@npm:^0.30.1":
+  version: 0.30.1
+  resolution: "types-ramda@npm:0.30.1"
+  dependencies:
+    ts-toolbelt: "npm:^9.6.0"
+  checksum: 10c0/4a8b230ae9772e6534f65b1a154dd5604bcd1d74e27b49686337a215e83aa8fc93e49f8c49af395418d2950cb9fb9b900662077c1d4b73ff6fe4f4bcb83ab2d6
   languageName: node
   linkType: hard
 
