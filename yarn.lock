@@ -1424,6 +1424,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/hashes@npm:^1.1.5":
+  version: 1.8.0
+  resolution: "@noble/hashes@npm:1.8.0"
+  checksum: 10c0/06a0b52c81a6fa7f04d67762e08b2c476a00285858150caeaaff4037356dd5e119f45b2a530f638b77a5eeca013168ec1b655db41bae3236cb2e9d511484fc77
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -1483,6 +1490,15 @@ __metadata:
   bin:
     opencollective: bin/opencollective.js
   checksum: 10c0/540268687af3289ff107585484d42201b404cdbb98b3a512487c12a6b180a8f0e1df0d701df47d3d9e0d5c0f6eb3252d80535562aedca9edf52cf7fd17ae4601
+  languageName: node
+  linkType: hard
+
+"@paralleldrive/cuid2@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "@paralleldrive/cuid2@npm:2.2.2"
+  dependencies:
+    "@noble/hashes": "npm:^1.1.5"
+  checksum: 10c0/af5826df93de437121308f4f4ce0b2eeb89b60bb57a1a6592fb89c0d40d311ad1d9f3f6a4db2cce6f2bcf572de1aa3f85704254e89b18ce61c41ebb06564c4ee
   languageName: node
   linkType: hard
 
@@ -4649,14 +4665,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formidable@npm:^3.5.1":
-  version: 3.5.2
-  resolution: "formidable@npm:3.5.2"
+"formidable@npm:^3.5.4":
+  version: 3.5.4
+  resolution: "formidable@npm:3.5.4"
   dependencies:
+    "@paralleldrive/cuid2": "npm:^2.2.2"
     dezalgo: "npm:^1.0.4"
-    hexoid: "npm:^2.0.0"
     once: "npm:^1.4.0"
-  checksum: 10c0/c26d89ba84d392f0e68ba1aca9f779e0f2e94db053d95df562c730782956f302e3f069c07ab96f991415af915ac7b8771f4c813d298df43577fdf439e1e8741e
+  checksum: 10c0/3a311ce57617eb8f532368e91c0f2bbfb299a0f1a35090e085bd6ca772298f196fbb0b66f0d4b5549d7bf3c5e1844439338d4402b7b6d1fedbe206ad44a931f8
   languageName: node
   linkType: hard
 
@@ -5108,13 +5124,6 @@ __metadata:
   version: 5.0.0
   resolution: "help-me@npm:5.0.0"
   checksum: 10c0/054c0e2e9ae2231c85ab5e04f75109b9d068ffcc54e58fb22079822a5ace8ff3d02c66fd45379c902ad5ab825e5d2e1451fcc2f7eab1eb49e7d488133ba4cacb
-  languageName: node
-  linkType: hard
-
-"hexoid@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "hexoid@npm:2.0.0"
-  checksum: 10c0/a9d5e6f4adeaefcb4a53803dd48bf0a242d92e8ec699555aea616c4bf8f91788f03093595085976f63d6830815dd080c063503540fabc7e854ebfb11161687c6
   languageName: node
   linkType: hard
 
@@ -6086,7 +6095,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-util@npm:^29.0.0, jest-util@npm:^29.7.0":
+"jest-util@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest-util@npm:29.7.0"
   dependencies:
@@ -8229,12 +8238,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.7.1":
-  version: 7.7.1
-  resolution: "semver@npm:7.7.1"
+"semver@npm:^7.7.2":
+  version: 7.7.2
+  resolution: "semver@npm:7.7.2"
   bin:
     semver: bin/semver.js
-  checksum: 10c0/fd603a6fb9c399c6054015433051bdbe7b99a940a8fb44b85c2b524c4004b023d7928d47cb22154f8d054ea7ee8597f586605e05b52047f048278e4ac56ae958
+  checksum: 10c0/aca305edfbf2383c22571cb7714f48cadc7ac95371b4b52362fb8eeffdfbc0de0669368b82b2b15978f8848f01d7114da65697e56cd8c37b0dab8c58e543f9ea
   languageName: node
   linkType: hard
 
@@ -8768,30 +8777,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"superagent@npm:^9.0.1":
-  version: 9.0.2
-  resolution: "superagent@npm:9.0.2"
+"superagent@npm:^10.2.2":
+  version: 10.2.2
+  resolution: "superagent@npm:10.2.2"
   dependencies:
     component-emitter: "npm:^1.3.0"
     cookiejar: "npm:^2.1.4"
     debug: "npm:^4.3.4"
     fast-safe-stringify: "npm:^2.1.1"
     form-data: "npm:^4.0.0"
-    formidable: "npm:^3.5.1"
+    formidable: "npm:^3.5.4"
     methods: "npm:^1.1.2"
     mime: "npm:2.6.0"
     qs: "npm:^6.11.0"
-  checksum: 10c0/bfe7522ce9554552bed03c0e71949038e54626dd7be627f1033d92aae5b46d90afc42f8fc0dcda481eebf371a30b702414e438ea51251be6ab7bfbd60086d147
+  checksum: 10c0/7a5203616a421591d20eeefc1ae39b68270d4ed05eb920f53cc5ee4682370e5190d01bde933158dbe0e217d889b145239f2115b8b14dcc1744f26486a0bf3699
   languageName: node
   linkType: hard
 
 "supertest@npm:^7.0.0":
-  version: 7.1.0
-  resolution: "supertest@npm:7.1.0"
+  version: 7.1.3
+  resolution: "supertest@npm:7.1.3"
   dependencies:
     methods: "npm:^1.1.2"
-    superagent: "npm:^9.0.1"
-  checksum: 10c0/7a711630b5895c86978980fc88db0b6e54a655424d47e83bb126ff13d3879130271c37bca5e1f404c9ce8cbcaa922ab0897f3955598c3d5bb0dc6914161221bc
+    superagent: "npm:^10.2.2"
+  checksum: 10c0/3ca9ea4bf360ea79ecdd059fdb3bffcf7e10145b959913491a0fe36f17b54d09e22103e5d10dfc462bdb1f84de8794cf26b7eaf3d39de8326a8aad1c05fe9aaa
   languageName: node
   linkType: hard
 
@@ -9024,25 +9033,25 @@ __metadata:
   linkType: hard
 
 "ts-jest@npm:^29.0.0":
-  version: 29.3.2
-  resolution: "ts-jest@npm:29.3.2"
+  version: 29.4.0
+  resolution: "ts-jest@npm:29.4.0"
   dependencies:
     bs-logger: "npm:^0.2.6"
     ejs: "npm:^3.1.10"
     fast-json-stable-stringify: "npm:^2.1.0"
-    jest-util: "npm:^29.0.0"
     json5: "npm:^2.2.3"
     lodash.memoize: "npm:^4.1.2"
     make-error: "npm:^1.3.6"
-    semver: "npm:^7.7.1"
-    type-fest: "npm:^4.39.1"
+    semver: "npm:^7.7.2"
+    type-fest: "npm:^4.41.0"
     yargs-parser: "npm:^21.1.1"
   peerDependencies:
     "@babel/core": ">=7.0.0-beta.0 <8"
-    "@jest/transform": ^29.0.0
-    "@jest/types": ^29.0.0
-    babel-jest: ^29.0.0
-    jest: ^29.0.0
+    "@jest/transform": ^29.0.0 || ^30.0.0
+    "@jest/types": ^29.0.0 || ^30.0.0
+    babel-jest: ^29.0.0 || ^30.0.0
+    jest: ^29.0.0 || ^30.0.0
+    jest-util: ^29.0.0 || ^30.0.0
     typescript: ">=4.3 <6"
   peerDependenciesMeta:
     "@babel/core":
@@ -9055,9 +9064,11 @@ __metadata:
       optional: true
     esbuild:
       optional: true
+    jest-util:
+      optional: true
   bin:
     ts-jest: cli.js
-  checksum: 10c0/84762720dbef45c1644348d67d0dcb8b7ad6369a16628c4752aceeb47f0ccdad63ae14485048b641c20ce096337a160ab816881361ef5517325bac6a5b3756e0
+  checksum: 10c0/c266431200786995b5bd32f8e61f17a564ce231278aace1d98fb0ae670f24013aeea06c90ec6019431e5a6f5e798868785131bef856085c931d193e2efbcea04
   languageName: node
   linkType: hard
 
@@ -9210,7 +9221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.39.1":
+"type-fest@npm:^4.41.0":
   version: 4.41.0
   resolution: "type-fest@npm:4.41.0"
   checksum: 10c0/f5ca697797ed5e88d33ac8f1fec21921839871f808dc59345c9cf67345bfb958ce41bd821165dbf3ae591cedec2bf6fe8882098dfdd8dc54320b859711a2c1e4
