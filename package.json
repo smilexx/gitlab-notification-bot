@@ -26,7 +26,7 @@
     "typeorm:revert-migration": "npm run typeorm -- -d ./src/typeorm.config.ts migration:revert"
   },
   "dependencies": {
-    "@gitbeaker/core": "^37.0.0",
+    "@gitbeaker/core": "^43.0.0",
     "@gitbeaker/rest": "^37.0.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
