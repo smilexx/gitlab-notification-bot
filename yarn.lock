@@ -830,7 +830,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gitbeaker/core@npm:^37.0.0, @gitbeaker/core@npm:^37.1.0":
+"@gitbeaker/core@npm:44.0.5":
+  version: 44.0.5
+  resolution: "@gitbeaker/core@npm:44.0.5"
+  dependencies:
+    "@gitbeaker/requester-utils": "npm:44.0.5"
+    picoquery: "npm:^2.5.0"
+    xcase: "npm:^2.0.1"
+  checksum: 10c0/5f617aab5f1214a1d69cbd746ea87ea9c94b016f195292518ee4cc903ca2fec82cc5d6ac714545bdf575664d3c7488601789467b8fee3d0fb09266e95cf84a8b
+  languageName: node
+  linkType: hard
+
+"@gitbeaker/core@npm:^37.0.0":
   version: 37.1.0
   resolution: "@gitbeaker/core@npm:37.1.0"
   dependencies:
@@ -838,6 +849,18 @@ __metadata:
     qs: "npm:^6.11.1"
     xcase: "npm:^2.0.1"
   checksum: 10c0/6a6c7fb4dfc82d3c59f1614f49f2386c0b14c73c7f586d72d24e646c31267d9489037e64c7b71608189e79c4f36b36495b9f185b22481d19983231b93447d4ef
+  languageName: node
+  linkType: hard
+
+"@gitbeaker/requester-utils@npm:44.0.5":
+  version: 44.0.5
+  resolution: "@gitbeaker/requester-utils@npm:44.0.5"
+  dependencies:
+    picomatch: "npm:^4.0.5"
+    picoquery: "npm:^2.5.0"
+    rate-limiter-flexible: "npm:^11.2.0"
+    xcase: "npm:^2.0.1"
+  checksum: 10c0/c81aa4e496404ebb770f8881040e2197035187a4676feeb9c3a241559dc8b9ae0b492c2ba49d8592c11ed97433dd7915ef8874d972f97c6a565739f4feda9d02
   languageName: node
   linkType: hard
 
@@ -851,13 +874,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gitbeaker/rest@npm:^37.0.0":
-  version: 37.1.0
-  resolution: "@gitbeaker/rest@npm:37.1.0"
+"@gitbeaker/rest@npm:^44.0.0":
+  version: 44.0.5
+  resolution: "@gitbeaker/rest@npm:44.0.5"
   dependencies:
-    "@gitbeaker/core": "npm:^37.1.0"
-    "@gitbeaker/requester-utils": "npm:^37.1.0"
-  checksum: 10c0/d5cc9a4436a9856c3d27dbb168f34a64b2faa00d721c3abb4aa5ecad64ea6cbb4186d0b041b0138a0fbc2c2c796b70591822a36afc5f1aebdcc4e156cd13c983
+    "@gitbeaker/core": "npm:44.0.5"
+    "@gitbeaker/requester-utils": "npm:44.0.5"
+  checksum: 10c0/6141d6b14375c4eb34d493d368e42d0212140e9a1b4fa8feb50f83907dd23dd031488c05324764c391f255035c6dd0bce42767646d04e7d2d70a9659b47ac026
   languageName: node
   linkType: hard
 
@@ -4886,7 +4909,7 @@ __metadata:
   resolution: "gitlab-notification-bot@workspace:."
   dependencies:
     "@gitbeaker/core": "npm:^37.0.0"
-    "@gitbeaker/rest": "npm:^37.0.0"
+    "@gitbeaker/rest": "npm:^44.0.0"
     "@nestjs/cli": "npm:^10.0.0"
     "@nestjs/common": "npm:^10.0.0"
     "@nestjs/config": "npm:^3.0.0"
@@ -7379,10 +7402,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^4.0.0, picomatch@npm:^4.0.4":
+"picomatch@npm:^4.0.0, picomatch@npm:^4.0.4, picomatch@npm:^4.0.5":
   version: 4.0.7
   resolution: "picomatch@npm:4.0.7"
   checksum: 10c0/beb6ae02c43ae44e84883b90830196d9046b1726ead292adcf7f57945e0bb0d992d68563d87e03b484b6f3c9a5c6defda7523477f047d7f0e663f126cc01787f
+  languageName: node
+  linkType: hard
+
+"picoquery@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "picoquery@npm:2.5.0"
+  checksum: 10c0/ac22a7622ecf6f6c0d2657b04d2ca346f814ff4d343827e6ca53d2d5cecfebee18d80b1290b916d11db6f62866bec26e92bb0a0d7939bd15971e60320db8d265
   languageName: node
   linkType: hard
 
@@ -7878,6 +7908,13 @@ __metadata:
   version: 1.2.1
   resolution: "range-parser@npm:1.2.1"
   checksum: 10c0/96c032ac2475c8027b7a4e9fe22dc0dfe0f6d90b85e496e0f016fbdb99d6d066de0112e680805075bd989905e2123b3b3d002765149294dce0c1f7f01fcc2ea0
+  languageName: node
+  linkType: hard
+
+"rate-limiter-flexible@npm:^11.2.0":
+  version: 11.4.1
+  resolution: "rate-limiter-flexible@npm:11.4.1"
+  checksum: 10c0/b395ea485019b68ab8c145d90d4f4dc70a9b523a0e4864a95cef567a814196e9d86b119613bb16b533299ba8c34c87eea05b5717c1c315b48dec8c2df103b8da
   languageName: node
   linkType: hard
 
